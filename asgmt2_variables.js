@@ -9,8 +9,8 @@ Moving all declarations to the top of the current scope (to the top of the curre
 
 ***What are the differences between let, const and var? When would each be appropriate too use?
 
-Before ES2015, JavaScript had only two types of scope: Global Scope and Function Scope. Variables declared Globally (outside any function) have Global Scope.Global variables can be accessed from anywhere in a JavaScript program. Variables declared Locally (inside a function) have Function Scope. Variables declared with the let keyword can have Block Scope.
-Variables declared inside a block {} cannot be accessed from outside the block. Variables declared inside a block {} cannot be accessed from outside the block.
+Before ES2015, JavaScript had only two types of scope: Global Scope and Function Scope. Variables declared Globally (outside any function) have Global Scope. Global variables can be accessed from anywhere in a JavaScript program. Variables declared Locally (inside a function) have Function Scope. Variables declared with the let keyword can have Block Scope.
+Variables declared inside a block {} cannot be accessed from outside the block.
 
 1) var declarations are globally scoped or function scoped while let and const are block scoped.
 2) var variables can be updated and re-declared within its scope; let variables can be updated but not re-declared; const variables can neither be updated nor re-declared.
