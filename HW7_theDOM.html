@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOMEWORK #7: The DOM</title>
+
+    <style>
+
+        .canvas {
+            border: solid 1px #000;
+        }
+
+        #rectangleWrapper{
+            padding-top: 50px;
+            padding-left: 50px;
+            padding-right: 50px;
+            padding-bottom: 0px;
+        }
+
+    </style>
+
+</head>
+<body onload="showRectID()">
+    
+    <h1>HOMEWORK #7: The DOM</h1>
+
+    <h2>This is the seventh assignment in "Keeping up with the Javascripts" course</h2>
+
+    <div id ="rectangleWrapper">
+
+        <canvas id="rectangle1" class="canvas" width="300" height="150"></canvas>   
+        <canvas id="rectangle2" class="canvas" width="300" height="150"></canvas>
+        <canvas id="rectangle3" class="canvas" width="300" height="150"></canvas>
+        <canvas id="rectangle4" class="canvas" width="300" height="150"></canvas>
+        <canvas id="rectangle5" class="canvas" width="300" height="150"></canvas>
+        <canvas id="rectangle6" class="canvas" width="300" height="150"></canvas>
+        <canvas id="rectangle7" class="canvas" width="300" height="150"></canvas>
+        <canvas id="rectangle8" class="canvas" width="300" height="150"></canvas>
+        <canvas id="rectangle9" class="canvas" width="300" height="150"></canvas>
+        <canvas id="rectangle10" class="canvas" width="300" height="150"></canvas>
+
+    </div>
+        
+
+    <script>
+        
+        let i=0;
+        let colors = ["#FF5733", "#7AFF33", "#FF0000", "#F0FF33", "#33FFD4", "#33DDFF", "#3361FF", "#8C7226", "#FF33F6", "#FF339C"];
+        let rectID = [];
+
+        let rectangleCollection = document.querySelectorAll(".canvas");
+
+        for (let rectangle of rectangleCollection){
+            
+            let ctx = rectangle.getContext("2d");
+            ctx.fillStyle = colors[i];
+            ctx.fillRect(0, 0, 300, 150);
+
+            if(i<=colors.length){
+                const newMessage = document.createElement("pre");
+                newMessage.innerText = colors[i];         
+                rectangle.after(newMessage);
+                i+=1;
+            }else{
+                break;
+            }
+
+        }
+
+        function showRectID(){
+
+            console.log("Here are the rectangle IDs");
+            
+            for(let item of rectangleCollection){
+                rectID.push(item.id);
+            }
+
+            function looper(value){
+                setTimeout(() => {
+                    console.log(rectID[value]);
+                }, (value+1) * 1000);
+            }
+
+            for(let i=0; i<10; i++){
+                looper(i);
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>
