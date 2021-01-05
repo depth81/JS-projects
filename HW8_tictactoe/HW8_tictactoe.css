@@ -1,0 +1,24 @@
+#myTable{
+    border: 1px solid black;
+    table-layout: fixed;
+    width: 800px;
+    height: 800px;
+    text-align: center;
+}
+
+tr td{
+    border: 2px solid black;
+    font-size: 50px;
+}
+
+.container{
+    /* background-color: aqua; */
+    margin:auto;
+    width: 50%;
+    align-content: center;
+}
+
+.turnToRed{
+    color: red;
+}
+
