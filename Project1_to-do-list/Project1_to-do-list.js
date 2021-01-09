@@ -91,12 +91,30 @@ function signUp(){
     btnSubmitSU.id = "btnSubmitSU";
     btnSubmitSU.innerText = "SUBMIT";
 
+
+    /* Creating provisional buttons to query and clear the local storage */
+    let btnQLS = document.createElement("button");
+    btnQLS.type = "button";
+    btnQLS.id = "btnQLS";
+    btnQLS.innerText = "Query LS";
+
+    let btnCLR = document.createElement("button");
+    btnCLR.type = "button";
+    btnCLR.id = "btnCLR";
+    btnCLR.innerText = "Clear LS"
+
     divChkBox.appendChild(chkAgree);
     divChkBox.appendChild(lblAgree);
     myForm.appendChild(divChkBox);
     divBtnSubmitSignUp.appendChild(btnSubmitSU);
     myForm.appendChild(divBtnSubmitSignUp);
+    
+    //provisional buttons to query and clear the localStorage object
+    myForm.appendChild(btnQLS);
+    myForm.appendChild(btnCLR);
+
     divContainer.appendChild(myForm);
+
 
     btnSubmitSU.addEventListener("click", addUser);
 
@@ -134,24 +152,24 @@ function signUp(){
 
                     console.log(newUser);
                     usersList.push(newUser);
-                    console.log(usersList);
                     localStorageUsersList(usersList);
                 }
 
             }
 
         }
-    
-    }//end addUser()
+        
+        function localStorageUsersList(uList){
+            localStorage.setItem('localUsersList',JSON.stringify(uList));
+            txtFirstName.value = "";
+            txtLastName.value = "";
+            email.value = "";
+            passw.value = "";
+            chkAgree.checked = false;
+        }
 
-    function localStorageUsersList(uList){
-        localStorage.setItem('localUsersList',JSON.stringify(uList));
-        txtFirstName.value = "";
-        txtLastName.value = "";
-        email.value = "";
-        passw.value = "";
-        chkAgree.checked = false;
-    }
+
+    }//end addUser()
 
     //Query users list
     var btnQueryLS = document.getElementById("btnQLS");
@@ -159,17 +177,16 @@ function signUp(){
 
     function getUsersList(){
 
-        console.log(localStorage.length);
         var storedList = localStorage.getItem('localUsersList');
         console.log(storedList);
 
         if(storedList === null){
-            usersList = {};
+            usersList = [];
         }else{
             usersList = JSON.parse(storedList);
         }
         return usersList;
-    }   
+    } 
 
     //CLear Local Storage
     var btnCLRLS = document.getElementById("btnCLR");
@@ -177,15 +194,9 @@ function signUp(){
 
     function clearLocalStorageData(){
         localStorage.clear();
-}
-
+    }
 
 }//END signUp()
-
-
-
-
-
 
 function logIn(){
 
@@ -226,6 +237,31 @@ function logIn(){
     myForm.appendChild(divBtnSubmitLogIn);
     divContainer.appendChild(myForm);
 
-}
+    btnSubmitLI.addEventListener("click", matchUser);
 
+    function matchUser(){
+        
+        let counter = 0;
+        let users = JSON.parse(localStorage.getItem('localUsersList'));
+        em = document.getElementById("email").value;
+        passw = document.getElementById("password").value;   
+        
+        for(let user of users){
+            if (em === user.email && passw === user.pwd){
+                counter+=1;
+            }
+        }
+
+        if(counter === 0){
+            alert("please verify your credentials...");
+        }else{
+            alert("YOU ARE WELCOME!");
+        }
+
+        document.getElementById("email").value = "";
+        document.getElementById("password").value = "";
+
+    }
+    
+}
 
