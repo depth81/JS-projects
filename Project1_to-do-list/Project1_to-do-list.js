@@ -91,7 +91,6 @@ function signUp(){
     btnSubmitSU.id = "btnSubmitSU";
     btnSubmitSU.innerText = "SUBMIT";
 
-
     /* Creating provisional buttons to query and clear the local storage */
     let btnQLS = document.createElement("button");
     btnQLS.type = "button";
@@ -101,7 +100,7 @@ function signUp(){
     let btnCLR = document.createElement("button");
     btnCLR.type = "button";
     btnCLR.id = "btnCLR";
-    btnCLR.innerText = "Clear LS"
+    btnCLR.innerText = "Clear LS";
 
     divChkBox.appendChild(chkAgree);
     divChkBox.appendChild(lblAgree);
@@ -114,7 +113,6 @@ function signUp(){
     myForm.appendChild(btnCLR);
 
     divContainer.appendChild(myForm);
-
 
     btnSubmitSU.addEventListener("click", addUser);
 
@@ -166,6 +164,8 @@ function signUp(){
             email.value = "";
             passw.value = "";
             chkAgree.checked = false;
+            alert("successfully stored!");
+            dashBoard();
         }
 
 
@@ -197,6 +197,7 @@ function signUp(){
     }
 
 }//END signUp()
+
 
 function logIn(){
 
@@ -244,7 +245,7 @@ function logIn(){
         let counter = 0;
         let users = JSON.parse(localStorage.getItem('localUsersList'));
         em = document.getElementById("email").value;
-        passw = document.getElementById("password").value;   
+        passw = document.getElementById("password").value;
         
         for(let user of users){
             if (em === user.email && passw === user.pwd){
@@ -254,14 +255,189 @@ function logIn(){
 
         if(counter === 0){
             alert("please verify your credentials...");
+            document.getElementById("email").value = "";
+            document.getElementById("password").value = "";
         }else{
             alert("YOU ARE WELCOME!");
-        }
-
-        document.getElementById("email").value = "";
-        document.getElementById("password").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("password").value = "";
+            dashBoard();
+        }        
 
     }
     
-}
+}//END LogIn
+
+/** DASHBOARD */
+function dashBoard(){
+    
+    divContainer.removeChild(myForm);
+
+    const br1 = document.createElement("br");
+
+    let divLogOut = document.createElement("div");
+    divLogOut.id = "divLogOut";
+
+    let btnLogOut = document.createElement("button");
+    btnLogOut.type = "button";
+    btnLogOut.id = "btnLogOut";
+    btnLogOut.innerText = "Log Out";
+
+    let divAccountSettings = document.createElement("div");
+    divAccountSettings.id = "divAccountSettings";
+
+    let btnAccountSettings = document.createElement("button");
+    btnAccountSettings.type = "button";
+    btnAccountSettings.id = "btnAccountSettings";
+    btnAccountSettings.innerText = "Account Settings";
+
+    divLogOut.appendChild(btnLogOut);
+    divAccountSettings.appendChild(br1);
+    divAccountSettings.appendChild(btnAccountSettings);
+    
+    divContainer.appendChild(divLogOut);
+    divContainer.appendChild(divAccountSettings);
+
+    btnLogOut.addEventListener("click", removeElements);
+    btnAccountSettings.addEventListener("click", accountSettings);
+
+    function removeElements(){
+        
+        var message = confirm("Are you sure to log out?");
+        
+        if(message){
+            
+            removeAllChildNodes(divContainer);    
+            
+            function removeAllChildNodes(element) {
+                while (element.firstChild) {
+                    element.removeChild(element.firstChild);
+                }
+            }
+
+            landingPage();
+
+        }else{
+            
+            return;
+        }
+        
+    }
+
+    function accountSettings(){
+
+        btnAccountSettings.removeEventListener("click", accountSettings);
+
+        const br1 = document.createElement("br");
+        const br2 = document.createElement("br");
+        const br3 = document.createElement("br");
+        const br4 = document.createElement("br");
+
+        let myForm2 = document.createElement("form");
+        myForm2.id = "myForm2";
+
+        let txtFirstName2 = document.createElement("input");
+        txtFirstName2.setAttribute("type", "text");
+        txtFirstName2.placeholder = "New First Name";
+        txtFirstName2.style.display = "block";
+        txtFirstName2.id = "txtFirstName2";
+        myForm2.appendChild(txtFirstName2);
+        myForm2.appendChild(br1);
+
+        let txtLastName2 = document.createElement("input");
+        txtLastName2.setAttribute("type", "text");
+        txtLastName2.placeholder = "New Last Name";
+        txtLastName2.style.display = "block";
+        txtLastName2.id = "txtLastName2";
+        myForm2.appendChild(txtLastName2);
+        myForm2.appendChild(br2);
+
+        let email2 = document.createElement("input");
+        email2.setAttribute("type", "email");
+        email2.id = "email2";
+        email2.style.display = "block";
+        email2.placeholder = "New email";
+        email2.required = true;
+        myForm2.appendChild(email2);
+        myForm2.appendChild(br3);
+
+        let passw2 = document.createElement("input");
+        passw2.setAttribute("type", "password");
+        passw2.id = "password2";
+        passw2.style.display = "block";
+        passw2.placeholder = "New password";
+        passw2.required = true;
+        myForm2.appendChild(passw2);
+        myForm2.appendChild(br4);
+
+        const divBtnSubmitModify = document.createElement("div");
+        divBtnSubmitModify.id = "divBtnSubmitModify";
+
+        let btnSubmitModify = document.createElement("button");
+        btnSubmitModify.type = "button";
+        btnSubmitModify.id = "btnSubmitModify";
+        btnSubmitModify.innerText = "Modify";
+
+        divBtnSubmitModify.appendChild(btnSubmitModify);
+        myForm2.appendChild(divBtnSubmitModify);
+        divContainer.appendChild(myForm2);
+
+        btnSubmitModify.addEventListener("click", askForNewData);
+
+        function askForNewData(){
+
+            btnAccountSettings.removeEventListener("click", askForNewData);           
+
+            if((document.getElementById("txtFirstName2").value === "" || document.getElementById("txtLastName2").value === "" || document.getElementById("email2").value === "" || document.getElementById("password2").value === "")){
+                
+                alert("All the fields are required");
+
+            }else{
+                
+                let fn = document.getElementById("txtFirstName2").value;
+                let ln = document.getElementById("txtLastName2").value;        
+                let em = document.getElementById("email2").value;
+                let passw = document.getElementById("password2").value;
+
+                var storedList = localStorage.getItem('localUsersList');
+
+                if(storedList === null){
+                    usersList = [];
+                }else{
+                    usersList = JSON.parse(storedList);
+                }
+
+                let currentPWD = prompt("Enter your current password");
+
+                for(let i=0; i<usersList.length; i++){
+                    if(usersList[i].pwd === currentPWD){
+                        usersList[i].fName = fn;
+                        usersList[i].lName = ln;
+                        usersList[i].email = em;
+                        usersList[i].pwd = passw;
+                    }
+                }
+
+                localStorageUsersList2(usersList);
+
+                function localStorageUsersList2(uList){
+                    localStorage.setItem('localUsersList',JSON.stringify(uList));
+                    alert("successfully modified!");
+                    txtFirstName2.value = "";
+                    txtLastName2.value = "";
+                    email2.value = "";
+                    passw2.value = "";
+                }
+
+                console.log(currentPWD);
+                console.log(usersList);
+
+            }
+        
+        }//End askForNewData
+
+    }//End accountSettings
+
+}//END dashBoard
+
 

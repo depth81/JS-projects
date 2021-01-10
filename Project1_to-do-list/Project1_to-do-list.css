@@ -39,7 +39,11 @@ div #chkAgree{
     width: auto;
 }
 
-#divBtnSubmitSignUp, #divBtnSubmitLogIn{
+#divBtnSubmitSignUp, #divBtnSubmitLogIn, #divBtnSubmitModify{
     text-align: left;
     margin-top: 20px;
+}
+
+#divLogOut, #divAccountSettings{
+    text-align: right;
 }
