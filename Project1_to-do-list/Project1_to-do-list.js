@@ -102,19 +102,54 @@ function signUp(){
     btnCLR.id = "btnCLR";
     btnCLR.innerText = "Clear LS";
 
-    divChkBox.appendChild(chkAgree);
+    let divQYCLR = document.createElement("div");
+    divQYCLR.id = "divQYCLR";
+
+    const divBtnHome = document.createElement("div");
+    divBtnHome.id = "divBtnHome";
+
+    let btnHome = document.createElement("button");
+    btnHome.type = "button";
+    btnHome.id = "btnHome";
+    btnHome.innerText = "HOME";
+
+    let btnCLRSU = document.createElement("button");
+    btnCLRSU.type = "button";
+    btnCLRSU.id = "btnCLRSU";
+    btnCLRSU.innerText = "CLEAR";
+    
+    divChkBox.appendChild(chkAgree);  
     divChkBox.appendChild(lblAgree);
     myForm.appendChild(divChkBox);
+    divBtnHome.appendChild(btnHome);
+    
     divBtnSubmitSignUp.appendChild(btnSubmitSU);
+    divBtnSubmitSignUp.appendChild(btnCLRSU);
     myForm.appendChild(divBtnSubmitSignUp);
+    myForm.appendChild(divBtnHome);
     
     //provisional buttons to query and clear the localStorage object
-    myForm.appendChild(btnQLS);
-    myForm.appendChild(btnCLR);
-
+    divQYCLR.appendChild(btnQLS);
+    divQYCLR.appendChild(btnCLR);
+    myForm.appendChild(divQYCLR); 
+    /** */
     divContainer.appendChild(myForm);
 
     btnSubmitSU.addEventListener("click", addUser);
+    btnHome.addEventListener("click", removingElementsSUHome);
+    btnCLRSU.addEventListener("click", clearSignUpUserData);
+
+    function removingElementsSUHome(){
+        divContainer.removeChild(myForm);
+        landingPage();
+    }
+
+    function clearSignUpUserData(){
+        txtFirstName.value = "";
+        txtLastName.value = "";
+        email.value = "";
+        passw.value = "";
+    }
 
     function addUser(){
         
@@ -137,7 +172,7 @@ function signUp(){
 
                 if(pw.length<3){
         
-                    alert("at least 3 characters please");
+                    alert("Your password must contain at least 3 characters");
         
                 }else{
 
@@ -234,11 +269,27 @@ function logIn(){
     btnSubmitLI.id = "btnSubmitLI";
     btnSubmitLI.innerText = "SUBMIT";
 
+    const divBtnHome = document.createElement("div");
+    divBtnHome.id = "divBtnHome";
+
+    let btnHome = document.createElement("button");
+    btnHome.type = "button";
+    btnHome.id = "btnBack";
+    btnHome.innerText = "HOME";
+
     divBtnSubmitLogIn.appendChild(btnSubmitLI);
+    divBtnHome.appendChild(btnHome);
     myForm.appendChild(divBtnSubmitLogIn);
+    myForm.appendChild(divBtnHome);
     divContainer.appendChild(myForm);
 
     btnSubmitLI.addEventListener("click", matchUser);
+    btnHome.addEventListener("click", removingContent);
+
+    function removingContent(){
+        divContainer.removeChild(myForm);
+        landingPage();
+    }
 
     function matchUser(){
         
@@ -261,6 +312,7 @@ function logIn(){
             alert("YOU ARE WELCOME!");
             document.getElementById("email").value = "";
             document.getElementById("password").value = "";
+            divContainer.removeChild(myForm);
             dashBoard();
         }        
 
@@ -271,9 +323,21 @@ function logIn(){
 /** DASHBOARD */
 function dashBoard(){
     
-    divContainer.removeChild(myForm);
+    //divContainer.removeChild(myForm);
 
     const br1 = document.createElement("br");
+
+    let divDashBoard = document.createElement("div");
+    divDashBoard.id = "divDashBoard";
+    divDashBoard.innerHTML = "<h1>WELCOME TO YOUR DASHBOARD!</h1>";
+
+    let taskList = document.createElement("ul");
+    taskList.id = "taskList";
+    
+    let taskListItem = document.createElement("li");
+    taskListItem.innerText = "FIRST TASK";
+
+    taskList.appendChild(taskListItem);
 
     let divLogOut = document.createElement("div");
     divLogOut.id = "divLogOut";
@@ -297,6 +361,8 @@ function dashBoard(){
     
     divContainer.appendChild(divLogOut);
     divContainer.appendChild(divAccountSettings);
+    divDashBoard.appendChild(taskList);
+    divContainer.appendChild(divDashBoard);
 
     btnLogOut.addEventListener("click", removeElements);
     btnAccountSettings.addEventListener("click", accountSettings);
@@ -325,6 +391,8 @@ function dashBoard(){
     }
 
     function accountSettings(){
+
+        divContainer.removeChild(divDashBoard);
 
         btnAccountSettings.removeEventListener("click", accountSettings);
 
@@ -376,13 +444,43 @@ function dashBoard(){
         let btnSubmitModify = document.createElement("button");
         btnSubmitModify.type = "button";
         btnSubmitModify.id = "btnSubmitModify";
-        btnSubmitModify.innerText = "Modify";
+        btnSubmitModify.innerText = "MODIFY";
+
+        let btnCancel = document.createElement("button");
+        btnCancel.type + "button";
+        btnCancel.id = "btnCancel";
+        btnCancel.innerText = "CANCEL";
+
+        let btnClearEdit = document.createElement("button");
+        btnClearEdit.type = "button";
+        btnClearEdit.id = "btnClearEdit";
+        btnClearEdit.innerText = "CLEAR";
 
         divBtnSubmitModify.appendChild(btnSubmitModify);
+        divBtnSubmitModify.appendChild(btnClearEdit);
+        divBtnSubmitModify.appendChild(btnCancel);
         myForm2.appendChild(divBtnSubmitModify);
         divContainer.appendChild(myForm2);
 
         btnSubmitModify.addEventListener("click", askForNewData);
+        btnCancel.addEventListener("click", cancelEdition);
+        btnClearEdit.addEventListener("click", clearEdition);
+
+        function clearEdition(){
+            document.getElementById("txtFirstName2").value = "";
+            document.getElementById("txtLastName2").value = "";
+            document.getElementById("email2").value = "";
+            document.getElementById("password2").value = "";
+            return;
+        }
+
+        function cancelEdition(){
+            divContainer.removeChild(divAccountSettings);
+            divContainer.removeChild(divLogOut);
+            divContainer.removeChild(myForm2);
+            btnAccountSettings.addEventListener("click", accountSettings);
+            dashBoard();
+        }
 
         function askForNewData(){
 

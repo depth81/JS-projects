@@ -14,24 +14,34 @@ h2{
 }
 
 #container {
-    margin-top: 100px;
     text-align: center;
-    background-color: aqua;
-    height: 600px;
+    background-color: #cfe9ea;
+    height: auto;
+    padding-top: 40px;
+    padding-left: 20px;
+}
+
+#divHeader{
+    background-color: #D6F8E0;
+    padding: 30px;
 }
 
 button{
-    width: 70px;
+    width: 80px;
     height: 50px;
+    margin-right: 10px;
+    margin-left: 10px;
 }
 
 #divChkBox{
     text-align: left;
+    margin-left:  10px;
 }
 
 input {
     height: 50px;
     width: 400px;
+    margin-left: 10px;
 }
 
 div #chkAgree{
@@ -39,11 +49,24 @@ div #chkAgree{
     width: auto;
 }
 
-#divBtnSubmitSignUp, #divBtnSubmitLogIn, #divBtnSubmitModify{
+#divBtnSubmitSignUp, #divBtnSubmitLogIn, #divBtnSubmitModify, #divQYCLR, #divBtnHome{
     text-align: left;
     margin-top: 20px;
+    height: 50px;
 }
 
 #divLogOut, #divAccountSettings{
     text-align: right;
+    padding-top: 10px;
+}
+
+#divDashBoard{
+    height: 1000px;
+    padding-top: 50px;
+    margin-top: 50px;
+    border: black solid 2px;
+}
+
+ul li{
+    text-align: start;
 }
