@@ -200,6 +200,7 @@ function signUp(){
             passw.value = "";
             chkAgree.checked = false;
             alert("successfully stored!");
+            divContainer.removeChild(myForm);
             dashBoard();
         }
 
@@ -323,21 +324,15 @@ function logIn(){
 /** DASHBOARD */
 function dashBoard(){
     
-    //divContainer.removeChild(myForm);
-
     const br1 = document.createElement("br");
 
-    let divDashBoard = document.createElement("div");
-    divDashBoard.id = "divDashBoard";
-    divDashBoard.innerHTML = "<h1>WELCOME TO YOUR DASHBOARD!</h1>";
-
-    let taskList = document.createElement("ul");
+    /* let taskList = document.createElement("ul");
     taskList.id = "taskList";
     
     let taskListItem = document.createElement("li");
     taskListItem.innerText = "FIRST TASK";
 
-    taskList.appendChild(taskListItem);
+    taskList.appendChild(taskListItem); */
 
     let divLogOut = document.createElement("div");
     divLogOut.id = "divLogOut";
@@ -355,14 +350,18 @@ function dashBoard(){
     btnAccountSettings.id = "btnAccountSettings";
     btnAccountSettings.innerText = "Account Settings";
 
+    /* let divDashBoard = document.createElement("div");
+    divDashBoard.id = "divDashBoard";
+    divDashBoard.innerHTML = "<h1>WELCOME TO YOUR DASHBOARD!</h1>"; */
+
     divLogOut.appendChild(btnLogOut);
     divAccountSettings.appendChild(br1);
     divAccountSettings.appendChild(btnAccountSettings);
     
     divContainer.appendChild(divLogOut);
     divContainer.appendChild(divAccountSettings);
-    divDashBoard.appendChild(taskList);
-    divContainer.appendChild(divDashBoard);
+    /* divDashBoard.appendChild(taskList);
+    divContainer.appendChild(divDashBoard); */
 
     btnLogOut.addEventListener("click", removeElements);
     btnAccountSettings.addEventListener("click", accountSettings);
@@ -392,7 +391,7 @@ function dashBoard(){
 
     function accountSettings(){
 
-        divContainer.removeChild(divDashBoard);
+        //divContainer.removeChild(divDashBoard);
 
         btnAccountSettings.removeEventListener("click", accountSettings);
 
