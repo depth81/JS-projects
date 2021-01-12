@@ -58,6 +58,7 @@ div #chkAgree{
 #divLogOut, #divAccountSettings{
     text-align: right;
     padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 #divDashBoard{
@@ -67,6 +68,21 @@ div #chkAgree{
     border: black solid 2px;
 }
 
-ul li{
-    text-align: start;
+#myForm2{
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+}
+
+#myForm{
+    padding-bottom: 20px;
+}
+
+
+.swal-text {
+    padding: 17px;
+    display: block;
+    margin: 22px;
+    text-align: center;
+    color: red;
 }

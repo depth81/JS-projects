@@ -154,14 +154,20 @@ function signUp(){
     function addUser(){
         
         if(!chkAgree.checked){
-            
-            alert("You must accept the terms and conditions!");
+
+            swal({
+                text: "You must accept the terms of use!",
+                icon: "error",
+            });
         
         }else{
 
             if(txtFirstName.value === "" || txtLastName.value === "" || email.value === "" || passw.value === ""){
-        
-                alert("All fields are mandatory");
+
+                swal({
+                    text: "All fields are mandatory",
+                    icon: "error",
+                });
         
             }else{
 
@@ -199,7 +205,10 @@ function signUp(){
             email.value = "";
             passw.value = "";
             chkAgree.checked = false;
-            alert("successfully stored!");
+            swal({
+                title: "successfully stored!",
+                icon: "success",
+            });
             divContainer.removeChild(myForm);
             dashBoard();
         }
@@ -306,11 +315,17 @@ function logIn(){
         }
 
         if(counter === 0){
-            alert("please verify your credentials...");
+            swal({
+                text: "please verify your credentials!",
+                icon: "error",
+            });
             document.getElementById("email").value = "";
             document.getElementById("password").value = "";
         }else{
-            alert("YOU ARE WELCOME!");
+            swal({
+                title: "Welcome back!",
+                icon: "success",
+            });
             document.getElementById("email").value = "";
             document.getElementById("password").value = "";
             divContainer.removeChild(myForm);
@@ -324,16 +339,6 @@ function logIn(){
 /** DASHBOARD */
 function dashBoard(){
     
-    const br1 = document.createElement("br");
-
-    /* let taskList = document.createElement("ul");
-    taskList.id = "taskList";
-    
-    let taskListItem = document.createElement("li");
-    taskListItem.innerText = "FIRST TASK";
-
-    taskList.appendChild(taskListItem); */
-
     let divLogOut = document.createElement("div");
     divLogOut.id = "divLogOut";
 
@@ -350,18 +355,16 @@ function dashBoard(){
     btnAccountSettings.id = "btnAccountSettings";
     btnAccountSettings.innerText = "Account Settings";
 
-    /* let divDashBoard = document.createElement("div");
+    let divDashBoard = document.createElement("div");
     divDashBoard.id = "divDashBoard";
-    divDashBoard.innerHTML = "<h1>WELCOME TO YOUR DASHBOARD!</h1>"; */
+    divDashBoard.innerHTML = "<h1>WELCOME TO YOUR DASHBOARD!</h1>";
 
     divLogOut.appendChild(btnLogOut);
-    divAccountSettings.appendChild(br1);
     divAccountSettings.appendChild(btnAccountSettings);
     
     divContainer.appendChild(divLogOut);
     divContainer.appendChild(divAccountSettings);
-    /* divDashBoard.appendChild(taskList);
-    divContainer.appendChild(divDashBoard); */
+    divContainer.appendChild(divDashBoard);
 
     btnLogOut.addEventListener("click", removeElements);
     btnAccountSettings.addEventListener("click", accountSettings);
@@ -391,9 +394,9 @@ function dashBoard(){
 
     function accountSettings(){
 
-        //divContainer.removeChild(divDashBoard);
-
         btnAccountSettings.removeEventListener("click", accountSettings);
+
+        divDashBoard.style.display = "none";
 
         const br1 = document.createElement("br");
         const br2 = document.createElement("br");
@@ -459,7 +462,8 @@ function dashBoard(){
         divBtnSubmitModify.appendChild(btnClearEdit);
         divBtnSubmitModify.appendChild(btnCancel);
         myForm2.appendChild(divBtnSubmitModify);
-        divContainer.appendChild(myForm2);
+
+        divContainer.insertBefore(myForm2, divDashBoard);
 
         btnSubmitModify.addEventListener("click", askForNewData);
         btnCancel.addEventListener("click", cancelEdition);
@@ -470,15 +474,12 @@ function dashBoard(){
             document.getElementById("txtLastName2").value = "";
             document.getElementById("email2").value = "";
             document.getElementById("password2").value = "";
-            return;
         }
 
         function cancelEdition(){
-            divContainer.removeChild(divAccountSettings);
-            divContainer.removeChild(divLogOut);
             divContainer.removeChild(myForm2);
+            divDashBoard.style.display =  "block";
             btnAccountSettings.addEventListener("click", accountSettings);
-            dashBoard();
         }
 
         function askForNewData(){
@@ -487,7 +488,11 @@ function dashBoard(){
 
             if((document.getElementById("txtFirstName2").value === "" || document.getElementById("txtLastName2").value === "" || document.getElementById("email2").value === "" || document.getElementById("password2").value === "")){
                 
-                alert("All the fields are required");
+                //alert("All the fields are required");
+                swal({
+                    text: "All the fields are required",
+                    icon: "error",
+                });
 
             }else{
                 
@@ -519,7 +524,11 @@ function dashBoard(){
 
                 function localStorageUsersList2(uList){
                     localStorage.setItem('localUsersList',JSON.stringify(uList));
-                    alert("successfully modified!");
+                    //alert("successfully modified!");
+                    swal({
+                        title: "successfully modified!",
+                        icon: "success",
+                    });
                     txtFirstName2.value = "";
                     txtLastName2.value = "";
                     email2.value = "";
@@ -537,4 +546,62 @@ function dashBoard(){
 
 }//END dashBoard
 
+
+
+
+/* // constants to define the title of the alert and button text.
+var ALERT_TITLE = "OOPS!";
+var ALERT_BUTTON_TEXT = "ACCEPT";
+
+// over-ride the alert method only if this a newer browser.
+// Older browser will see standard alerts
+if(document.getElementById) {
+	window.alert = function(txt) {
+		createCustomAlert(txt);
+	}
+}
+
+function createCustomAlert(txt) {
+	// shortcut reference to the document object
+	d = document;
+
+	// if the modalContainer object already exists in the DOM, bail out.
+	if(d.getElementById("modalContainer")) return;
+
+	// create the modalContainer div as a child of the BODY element
+	mObj = d.getElementsByTagName("body")[0].appendChild(d.createElement("div"));
+	mObj.id = "modalContainer";
+	 // make sure its as tall as it needs to be to overlay all the content on the page
+	//mObj.style.height = document.documentElement.scrollHeight + "px";
+
+	// create the DIV that will be the alert 
+	alertObj = mObj.appendChild(d.createElement("div"));
+	alertObj.id = "alertBox";
+	// MSIE doesnt treat position:fixed correctly, so this compensates for positioning the alert
+	if(d.all && !window.opera) alertObj.style.top = document.documentElement.scrollTop + "px";
+	// center the alert box
+	alertObj.style.left = (d.documentElement.scrollWidth - alertObj.offsetWidth)/2 + "px";
+
+	// create an H1 element as the title bar
+	h1 = alertObj.appendChild(d.createElement("h1"));
+	h1.appendChild(d.createTextNode(ALERT_TITLE));
+
+	// create a paragraph element to contain the txt argument
+	msg = alertObj.appendChild(d.createElement("p"));
+	msg.innerHTML = txt;
+	
+	// create an anchor element to use as the confirmation button.
+	btn = alertObj.appendChild(d.createElement("a"));
+	btn.id = "closeBtn";
+	btn.appendChild(d.createTextNode(ALERT_BUTTON_TEXT));
+	btn.href = "#";
+	// set up the onclick event to remove the alert when the anchor is clicked
+	btn.onclick = function() { removeCustomAlert();return false; }
+
+}
+
+// removes the custom alert from the DOM
+function removeCustomAlert() {
+	document.getElementsByTagName("body")[0].removeChild(document.getElementById("modalContainer"));
+} */
 
