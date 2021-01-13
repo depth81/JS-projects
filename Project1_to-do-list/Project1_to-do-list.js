@@ -3,6 +3,33 @@ window.addEventListener("load", landingPage);
 const divContainer = document.getElementById("container");
 
 let usersList = [];
+var emailGlobal = "";
+var passwGlobal = "";
+var numberOfModifications = 0;
+
+function checkingEmailPwd(e, p){
+    
+    let counter = 0;
+    var storedList = localStorage.getItem('localUsersList');
+
+    if(storedList === null){
+        usersList = [];
+    }else{
+        usersList = JSON.parse(storedList);
+    }
+
+    for(let i=0; i<usersList.length; i++){
+        if(usersList[i].pwd === p){
+            if(usersList[i].email === e){
+                counter += 1;
+            }
+        }
+    }
+
+    return counter===0;
+}
+
+
 
 function landingPage(){
 
@@ -174,24 +201,43 @@ function signUp(){
                 const fn = txtFirstName.value;
                 const ln = txtLastName.value;
                 const em = email.value;
-                const pw = passw.value;
+                const pw = passw.value;     
 
-                if(pw.length<3){
-        
-                    alert("Your password must contain at least 3 characters");
-        
-                }else{
+                let saveToList = checkingEmailPwd(em, pw);
+                console.log(saveToList);
 
-                    var newUser = {
-                        fName : fn,
-                        lName : ln,
-                        email : em,
-                        pwd : pw
+                if(saveToList === true){
+                    
+                    if(pw.length<3){
+            
+                        swal({
+                            text: "Your password must contain at least 3 characters",
+                            icon: "error",
+                        });
+            
+                    }else{
+
+                        var newUser = {
+                            fName : fn,
+                            lName : ln,
+                            email : em,
+                            pwd : pw
+                        }
+
+                        console.log(newUser);
+                        usersList.push(newUser);
+                        localStorageUsersList(usersList);
+                        swal({
+                            title: "successfully added!",
+                            icon: "success",
+                        });
+
                     }
-
-                    console.log(newUser);
-                    usersList.push(newUser);
-                    localStorageUsersList(usersList);
+                }else{
+                    swal({
+                        text: "The combination email/password already exists in our database.",
+                        icon: "error",
+                    });
                 }
 
             }
@@ -308,6 +354,9 @@ function logIn(){
         em = document.getElementById("email").value;
         passw = document.getElementById("password").value;
         
+        emailGlobal = em;
+        passwGlobal = passw;
+        
         for(let user of users){
             if (em === user.email && passw === user.pwd){
                 counter+=1;
@@ -335,6 +384,8 @@ function logIn(){
     }
     
 }//END LogIn
+
+
 
 /** DASHBOARD */
 function dashBoard(){
@@ -382,7 +433,7 @@ function dashBoard(){
                     element.removeChild(element.firstChild);
                 }
             }
-
+            numberOfModifications = 0;
             landingPage();
 
         }else{
@@ -484,11 +535,12 @@ function dashBoard(){
 
         function askForNewData(){
 
-            btnAccountSettings.removeEventListener("click", askForNewData);           
+            let user;
 
+            btnAccountSettings.removeEventListener("click", askForNewData);
+            
             if((document.getElementById("txtFirstName2").value === "" || document.getElementById("txtLastName2").value === "" || document.getElementById("email2").value === "" || document.getElementById("password2").value === "")){
                 
-                //alert("All the fields are required");
                 swal({
                     text: "All the fields are required",
                     icon: "error",
@@ -501,107 +553,68 @@ function dashBoard(){
                 let em = document.getElementById("email2").value;
                 let passw = document.getElementById("password2").value;
 
-                var storedList = localStorage.getItem('localUsersList');
+                let modifyInList = checkingEmailPwd(em, passw);
 
-                if(storedList === null){
-                    usersList = [];
-                }else{
-                    usersList = JSON.parse(storedList);
-                }
+                console.log(modifyInList);
 
-                let currentPWD = prompt("Enter your current password");
+                if(modifyInList){
 
-                for(let i=0; i<usersList.length; i++){
-                    if(usersList[i].pwd === currentPWD){
-                        usersList[i].fName = fn;
-                        usersList[i].lName = ln;
-                        usersList[i].email = em;
-                        usersList[i].pwd = passw;
+                    var storedList = localStorage.getItem('localUsersList');
+
+                    if(storedList === null){
+                        usersList = [];
+                    }else{
+                        usersList = JSON.parse(storedList);
+                    }
+
+                    if(numberOfModifications === 0){
+                        
+                        let userIndexMod = usersList.findIndex(user => user.email === emailGlobal && user.pwd === passwGlobal);
+                        user = usersList[userIndexMod];
+                        
+                        usersList[userIndexMod].fName = fn;
+                        usersList[userIndexMod].lName = ln;
+                        usersList[userIndexMod].email = em;
+                        usersList[userIndexMod].pwd = passw;
+                        
+                        localStorageUsersList2(usersList);
+
+                        function localStorageUsersList2(uList){
+                            localStorage.setItem('localUsersList',JSON.stringify(uList));
+                            swal({
+                                title: "successfully modified!",
+                                icon: "success",
+                            });
+                        }
+                        numberOfModifications += 1;
+                    
+                    }else{
+        
+                        alert("Please log out..."); /** HERE THERE ARE ISSUES!!! */
+
                     }
                 }
 
-                localStorageUsersList2(usersList);
-
-                function localStorageUsersList2(uList){
-                    localStorage.setItem('localUsersList',JSON.stringify(uList));
-                    //alert("successfully modified!");
+                else{
                     swal({
-                        title: "successfully modified!",
-                        icon: "success",
+                        text: "The combination email/password already exists in our database.",
+                        icon: "error",
                     });
-                    txtFirstName2.value = "";
-                    txtLastName2.value = "";
-                    email2.value = "";
-                    passw2.value = "";
                 }
+                
+                txtFirstName2.value = "";
+                txtLastName2.value = "";
+                email2.value = "";
+                passw2.value = "";
 
-                console.log(currentPWD);
-                console.log(usersList);
+            }//end else
+            
+            console.log(usersList);
+            console.log(numberOfModifications);
 
-            }
-        
         }//End askForNewData
 
     }//End accountSettings
 
 }//END dashBoard
-
-
-
-
-/* // constants to define the title of the alert and button text.
-var ALERT_TITLE = "OOPS!";
-var ALERT_BUTTON_TEXT = "ACCEPT";
-
-// over-ride the alert method only if this a newer browser.
-// Older browser will see standard alerts
-if(document.getElementById) {
-	window.alert = function(txt) {
-		createCustomAlert(txt);
-	}
-}
-
-function createCustomAlert(txt) {
-	// shortcut reference to the document object
-	d = document;
-
-	// if the modalContainer object already exists in the DOM, bail out.
-	if(d.getElementById("modalContainer")) return;
-
-	// create the modalContainer div as a child of the BODY element
-	mObj = d.getElementsByTagName("body")[0].appendChild(d.createElement("div"));
-	mObj.id = "modalContainer";
-	 // make sure its as tall as it needs to be to overlay all the content on the page
-	//mObj.style.height = document.documentElement.scrollHeight + "px";
-
-	// create the DIV that will be the alert 
-	alertObj = mObj.appendChild(d.createElement("div"));
-	alertObj.id = "alertBox";
-	// MSIE doesnt treat position:fixed correctly, so this compensates for positioning the alert
-	if(d.all && !window.opera) alertObj.style.top = document.documentElement.scrollTop + "px";
-	// center the alert box
-	alertObj.style.left = (d.documentElement.scrollWidth - alertObj.offsetWidth)/2 + "px";
-
-	// create an H1 element as the title bar
-	h1 = alertObj.appendChild(d.createElement("h1"));
-	h1.appendChild(d.createTextNode(ALERT_TITLE));
-
-	// create a paragraph element to contain the txt argument
-	msg = alertObj.appendChild(d.createElement("p"));
-	msg.innerHTML = txt;
-	
-	// create an anchor element to use as the confirmation button.
-	btn = alertObj.appendChild(d.createElement("a"));
-	btn.id = "closeBtn";
-	btn.appendChild(d.createTextNode(ALERT_BUTTON_TEXT));
-	btn.href = "#";
-	// set up the onclick event to remove the alert when the anchor is clicked
-	btn.onclick = function() { removeCustomAlert();return false; }
-
-}
-
-// removes the custom alert from the DOM
-function removeCustomAlert() {
-	document.getElementsByTagName("body")[0].removeChild(document.getElementById("modalContainer"));
-} */
 
