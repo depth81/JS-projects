@@ -385,7 +385,15 @@ function logIn(){
     
 }//END LogIn
 
+function localStorageUsersList2(uList){
+    localStorage.setItem('localUsersList',JSON.stringify(uList));
+    swal({
+        title: "successfully modified!",
+        icon: "success",
+    });
 
+    numberOfModifications += 1;
+}
 
 /** DASHBOARD */
 function dashBoard(){
@@ -535,7 +543,10 @@ function dashBoard(){
 
         function askForNewData(){
 
-            let user;
+            let userIndexMod, userIndexModAux;
+            let currentEmail = "";
+            let currentPassword = "";
+            
 
             btnAccountSettings.removeEventListener("click", askForNewData);
             
@@ -555,11 +566,7 @@ function dashBoard(){
 
                 let modifyInList = checkingEmailPwd(em, passw);
 
-                console.log(modifyInList);
-
-                if(modifyInList){
-
-                    var storedList = localStorage.getItem('localUsersList');
+                var storedList = localStorage.getItem('localUsersList');
 
                     if(storedList === null){
                         usersList = [];
@@ -567,10 +574,11 @@ function dashBoard(){
                         usersList = JSON.parse(storedList);
                     }
 
+                if(modifyInList){
+
                     if(numberOfModifications === 0){
                         
-                        let userIndexMod = usersList.findIndex(user => user.email === emailGlobal && user.pwd === passwGlobal);
-                        user = usersList[userIndexMod];
+                        userIndexMod = usersList.findIndex(user => user.email === emailGlobal && user.pwd === passwGlobal);                       
                         
                         usersList[userIndexMod].fName = fn;
                         usersList[userIndexMod].lName = ln;
@@ -578,34 +586,44 @@ function dashBoard(){
                         usersList[userIndexMod].pwd = passw;
                         
                         localStorageUsersList2(usersList);
-
-                        function localStorageUsersList2(uList){
-                            localStorage.setItem('localUsersList',JSON.stringify(uList));
-                            swal({
-                                title: "successfully modified!",
-                                icon: "success",
-                            });
-                        }
-                        numberOfModifications += 1;
                     
                     }else{
-        
-                        alert("Please log out..."); /** HERE THERE ARE ISSUES!!! */
+
+                        currentEmail = prompt("Please enter your current email");
+                        currentPassword = prompt("Please enter your current password");
+                        
+                        console.log(currentEmail);
+                        console.log(currentPassword);
+
+                        userIndexModAux = usersList.findIndex(user => user.email === currentEmail && user.pwd === currentPassword);
+
+                        console.log(userIndexModAux);
+                        
+                        if(userIndexModAux === -1){
+                            
+                            swal({
+                                text: "There was an error!",
+                                icon: "error",
+                            });
+
+                        }else{
+                            
+                            usersList[userIndexModAux].fName = fn;
+                            usersList[userIndexModAux].lName = ln;
+                            usersList[userIndexModAux].email = em;
+                            usersList[userIndexModAux].pwd = passw;
+                            
+                            localStorageUsersList2(usersList);
+                        }
 
                     }
-                }
 
-                else{
+                }else{
                     swal({
                         text: "The combination email/password already exists in our database.",
                         icon: "error",
                     });
                 }
-                
-                txtFirstName2.value = "";
-                txtLastName2.value = "";
-                email2.value = "";
-                passw2.value = "";
 
             }//end else
             
