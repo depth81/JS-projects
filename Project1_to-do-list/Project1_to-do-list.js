@@ -201,7 +201,10 @@ function signUp(){
                 const fn = txtFirstName.value;
                 const ln = txtLastName.value;
                 const em = email.value;
-                const pw = passw.value;     
+                const pw = passw.value;
+                
+                emailGlobal = email.value;
+                passwGlobal = passw.value;
 
                 let saveToList = checkingEmailPwd(em, pw);
                 console.log(saveToList);
@@ -351,6 +354,7 @@ function logIn(){
         
         let counter = 0;
         let users = JSON.parse(localStorage.getItem('localUsersList'));
+        
         em = document.getElementById("email").value;
         passw = document.getElementById("password").value;
         
@@ -546,7 +550,6 @@ function dashBoard(){
             let userIndexMod, userIndexModAux;
             let currentEmail = "";
             let currentPassword = "";
-            
 
             btnAccountSettings.removeEventListener("click", askForNewData);
             
@@ -577,6 +580,9 @@ function dashBoard(){
                 if(modifyInList){
 
                     if(numberOfModifications === 0){
+
+                        console.log(emailGlobal);
+                        console.log(passwGlobal);
                         
                         userIndexMod = usersList.findIndex(user => user.email === emailGlobal && user.pwd === passwGlobal);                       
                         
@@ -584,7 +590,7 @@ function dashBoard(){
                         usersList[userIndexMod].lName = ln;
                         usersList[userIndexMod].email = em;
                         usersList[userIndexMod].pwd = passw;
-                        
+
                         localStorageUsersList2(usersList);
                     
                     }else{
