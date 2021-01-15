@@ -3,8 +3,7 @@ window.addEventListener("load", landingPage);
 const divContainer = document.getElementById("container");
 
 let usersList = [];
-var emailGlobal = "";
-var numberOfModifications = 0;
+var passwordGlobal = "";
 
 function localStorageUsersList(uList){
     localStorage.setItem('localUsersList',JSON.stringify(uList));
@@ -13,6 +12,7 @@ function localStorageUsersList(uList){
         title: "successfully stored!",
         icon: "success",
     });
+    
     divContainer.removeChild(myForm);
     dashBoard();
 }
@@ -23,29 +23,22 @@ function localStorageUsersList2(uList){
         title: "successfully modified!",
         icon: "success",
     });
-
-    numberOfModifications += 1;
 }
 
 function checkingEmail(e){
-    
-    let index;
-    var storedList = localStorage.getItem('localUsersList');
 
+    var storedList = localStorage.getItem('localUsersList');
+    
     if(storedList === null){
         usersList = [];
     }else{
         usersList = JSON.parse(storedList);
     }
 
-    if(usersList.length === 0){
-        numberOfModifications +=1;
-        return -1;
-    }else{
-        index = usersList.findIndex(user => user.email === e);
-        return index;
-    }
-    
+    let index = usersList.findIndex(user => user.email === e);
+
+    return index;
+
 }
 
 function landingPage(){
@@ -66,7 +59,7 @@ function landingPage(){
     btnSignUp.addEventListener("click", signUp);
     btnLogIn.addEventListener("click", logIn);
 
-}
+}//END LandingPage()
 
 function signUp(){
     
@@ -225,7 +218,6 @@ function signUp(){
                 emailGlobal = email.value;
 
                 let saveToList = checkingEmail(em);
-                console.log(saveToList);
 
                 if(saveToList !== -1){
 
@@ -237,7 +229,6 @@ function signUp(){
                     
                 }else{
                     
-
                     if(pw.length<3){
             
                         swal({
@@ -365,7 +356,6 @@ function logIn(){
         passw = document.getElementById("password").value;
         
         emailGlobal = em;
-        //passwGlobal = passw;
         
         for(let user of users){
             if (em === user.email && passw === user.pwd){
@@ -441,7 +431,6 @@ function dashBoard(){
                     element.removeChild(element.firstChild);
                 }
             }
-            numberOfModifications = 0;
             landingPage();
 
         }else{
@@ -543,9 +532,8 @@ function dashBoard(){
 
         function askForNewData(){
 
-            let userIndexMod, userIndexModAux;
+            let userIndexMod;
             let currentEmail = "";
-            //let currentPassword = "";
 
             btnAccountSettings.removeEventListener("click", askForNewData);
             
@@ -563,77 +551,89 @@ function dashBoard(){
                 let em = document.getElementById("email2").value;
                 let passw = document.getElementById("password2").value;
 
-                let modifyInList = checkingEmail(em);
-
-                console.log(modifyInList);
-
                 var storedList = localStorage.getItem('localUsersList');
 
-                    if(storedList === null){
-                        usersList = [];
-                    }else{
-                        usersList = JSON.parse(storedList);
-                    }
-
-                if(modifyInList !== -1){
-
-                    swal({
-                        text: "This email address already exists in our database.",
-                        icon: "error",
-                    });                 
-
+                if(storedList === null){
+                    usersList = [];
                 }else{
+                    usersList = JSON.parse(storedList);
+                }
 
-                    console.log(numberOfModifications);
+                currentEmail = prompt("Please enter your current email");
+                let indexCurrentEmail = checkingEmail(currentEmail);
+                console.log(indexCurrentEmail);
+                console.log(currentEmail);
 
-                    if(numberOfModifications === 0){
+                if(currentEmail !== null){
 
-                        userIndexMod = usersList.findIndex(user => user.email === emailGlobal); 
+                    if(currentEmail !== ""){
+
+                        userIndexMod = checkingEmail(em);
                         console.log(userIndexMod);
                         
-                        usersList[userIndexMod].fName = fn;
-                        usersList[userIndexMod].lName = ln;
-                        usersList[userIndexMod].email = em;
-                        usersList[userIndexMod].pwd = passw;
+                        if(indexCurrentEmail !== -1){
 
-                        localStorageUsersList2(usersList);
-                    
-                    }else{
+                            if(userIndexMod === -1){
+                                                    
+                                usersList[indexCurrentEmail].fName = fn;
+                                usersList[indexCurrentEmail].lName = ln;  
+                                usersList[indexCurrentEmail].email = em;
+                                usersList[indexCurrentEmail].pwd = passw;
+                                localStorageUsersList2(usersList);
 
-                        currentEmail = prompt("Please enter your current email");
-                        
-                        let index1 = checkingEmail(currentEmail);
+                            }else{
 
-                        if(index1 === -1){
+                                if(em === currentEmail){
+                                    
+                                    usersList[indexCurrentEmail].fName = fn;
+                                    usersList[indexCurrentEmail].lName = ln;  
+                                    usersList[indexCurrentEmail].email = em;
+                                    usersList[indexCurrentEmail].pwd = passw;
+                                    localStorageUsersList2(usersList);
+
+                                }else{
+                                    swal({
+                                        text: "This email already exists!",
+                                        icon: "error",
+                                    });
+    
+                                }
+                                
+                            }
+
+                        }else{
+
                             swal({
                                 text: "There was an error!",
                                 icon: "error",
                             });
-                        }else{
 
-                            userIndexModAux = usersList.findIndex(user => user.email === currentEmail);
-                            console.log(userIndexModAux);
-                            usersList[userIndexModAux].fName = fn;
-                            usersList[userIndexModAux].lName = ln;  
-                            usersList[userIndexModAux].email = em;
-                            usersList[userIndexModAux].pwd = passw;
-                            
-                            localStorageUsersList2(usersList);
+                        }                        
+                        
+                    }else{
 
-                        }   
-        
-                    }                
+                        swal({
+                            text: "There was an error!",
+                            icon: "error",
+                        });
 
+                    }
+                    
+                }else{
+
+                    swal({
+                        text: "There was an error!",
+                        icon: "error",
+                    });               
+                
                 }
 
-            }//end else
-            
             console.log(usersList);
-            console.log(numberOfModifications);
 
-        }//End askForNewData
+            }//END validation if...else
 
-    }//End accountSettings
+        }//END askForNewData()
 
-}//END dashBoard
-
+    }//END accountSettings()
+    
+}//END dashboard()
