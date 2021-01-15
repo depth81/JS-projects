@@ -4,12 +4,32 @@ const divContainer = document.getElementById("container");
 
 let usersList = [];
 var emailGlobal = "";
-var passwGlobal = "";
 var numberOfModifications = 0;
 
-function checkingEmailPwd(e, p){
+function localStorageUsersList(uList){
+    localStorage.setItem('localUsersList',JSON.stringify(uList));
+    chkAgree.checked = false;
+    swal({
+        title: "successfully stored!",
+        icon: "success",
+    });
+    divContainer.removeChild(myForm);
+    dashBoard();
+}
+
+function localStorageUsersList2(uList){
+    localStorage.setItem('localUsersList',JSON.stringify(uList));
+    swal({
+        title: "successfully modified!",
+        icon: "success",
+    });
+
+    numberOfModifications += 1;
+}
+
+function checkingEmail(e){
     
-    let counter = 0;
+    let index;
     var storedList = localStorage.getItem('localUsersList');
 
     if(storedList === null){
@@ -18,18 +38,15 @@ function checkingEmailPwd(e, p){
         usersList = JSON.parse(storedList);
     }
 
-    for(let i=0; i<usersList.length; i++){
-        if(usersList[i].pwd === p){
-            if(usersList[i].email === e){
-                counter += 1;
-            }
-        }
+    if(usersList.length === 0){
+        numberOfModifications +=1;
+        return -1;
+    }else{
+        index = usersList.findIndex(user => user.email === e);
+        return index;
     }
-
-    return counter===0;
+    
 }
-
-
 
 function landingPage(){
 
@@ -131,6 +148,7 @@ function signUp(){
 
     let divQYCLR = document.createElement("div");
     divQYCLR.id = "divQYCLR";
+    /** */
 
     const divBtnHome = document.createElement("div");
     divBtnHome.id = "divBtnHome";
@@ -160,6 +178,7 @@ function signUp(){
     divQYCLR.appendChild(btnCLR);
     myForm.appendChild(divQYCLR); 
     /** */
+
     divContainer.appendChild(myForm);
 
     btnSubmitSU.addEventListener("click", addUser);
@@ -204,13 +223,21 @@ function signUp(){
                 const pw = passw.value;
                 
                 emailGlobal = email.value;
-                passwGlobal = passw.value;
 
-                let saveToList = checkingEmailPwd(em, pw);
+                let saveToList = checkingEmail(em);
                 console.log(saveToList);
 
-                if(saveToList === true){
+                if(saveToList !== -1){
+
+                    swal({
+                        text: "This email address already exists in our database.",
+                        icon: "error",
+                    });
                     
+                    
+                }else{
+                    
+
                     if(pw.length<3){
             
                         swal({
@@ -236,32 +263,11 @@ function signUp(){
                         });
 
                     }
-                }else{
-                    swal({
-                        text: "The combination email/password already exists in our database.",
-                        icon: "error",
-                    });
-                }
+
+                }   
 
             }
-
         }
-        
-        function localStorageUsersList(uList){
-            localStorage.setItem('localUsersList',JSON.stringify(uList));
-            txtFirstName.value = "";
-            txtLastName.value = "";
-            email.value = "";
-            passw.value = "";
-            chkAgree.checked = false;
-            swal({
-                title: "successfully stored!",
-                icon: "success",
-            });
-            divContainer.removeChild(myForm);
-            dashBoard();
-        }
-
 
     }//end addUser()
 
@@ -359,7 +365,7 @@ function logIn(){
         passw = document.getElementById("password").value;
         
         emailGlobal = em;
-        passwGlobal = passw;
+        //passwGlobal = passw;
         
         for(let user of users){
             if (em === user.email && passw === user.pwd){
@@ -388,16 +394,6 @@ function logIn(){
     }
     
 }//END LogIn
-
-function localStorageUsersList2(uList){
-    localStorage.setItem('localUsersList',JSON.stringify(uList));
-    swal({
-        title: "successfully modified!",
-        icon: "success",
-    });
-
-    numberOfModifications += 1;
-}
 
 /** DASHBOARD */
 function dashBoard(){
@@ -549,7 +545,7 @@ function dashBoard(){
 
             let userIndexMod, userIndexModAux;
             let currentEmail = "";
-            let currentPassword = "";
+            //let currentPassword = "";
 
             btnAccountSettings.removeEventListener("click", askForNewData);
             
@@ -567,7 +563,9 @@ function dashBoard(){
                 let em = document.getElementById("email2").value;
                 let passw = document.getElementById("password2").value;
 
-                let modifyInList = checkingEmailPwd(em, passw);
+                let modifyInList = checkingEmail(em);
+
+                console.log(modifyInList);
 
                 var storedList = localStorage.getItem('localUsersList');
 
@@ -577,14 +575,21 @@ function dashBoard(){
                         usersList = JSON.parse(storedList);
                     }
 
-                if(modifyInList){
+                if(modifyInList !== -1){
+
+                    swal({
+                        text: "This email address already exists in our database.",
+                        icon: "error",
+                    });                 
+
+                }else{
+
+                    console.log(numberOfModifications);
 
                     if(numberOfModifications === 0){
 
-                        console.log(emailGlobal);
-                        console.log(passwGlobal);
-                        
-                        userIndexMod = usersList.findIndex(user => user.email === emailGlobal && user.pwd === passwGlobal);                       
+                        userIndexMod = usersList.findIndex(user => user.email === emailGlobal); 
+                        console.log(userIndexMod);
                         
                         usersList[userIndexMod].fName = fn;
                         usersList[userIndexMod].lName = ln;
@@ -596,39 +601,29 @@ function dashBoard(){
                     }else{
 
                         currentEmail = prompt("Please enter your current email");
-                        currentPassword = prompt("Please enter your current password");
                         
-                        console.log(currentEmail);
-                        console.log(currentPassword);
+                        let index1 = checkingEmail(currentEmail);
 
-                        userIndexModAux = usersList.findIndex(user => user.email === currentEmail && user.pwd === currentPassword);
-
-                        console.log(userIndexModAux);
-                        
-                        if(userIndexModAux === -1){
-                            
+                        if(index1 === -1){
                             swal({
                                 text: "There was an error!",
                                 icon: "error",
                             });
-
                         }else{
-                            
+
+                            userIndexModAux = usersList.findIndex(user => user.email === currentEmail);
+                            console.log(userIndexModAux);
                             usersList[userIndexModAux].fName = fn;
-                            usersList[userIndexModAux].lName = ln;
+                            usersList[userIndexModAux].lName = ln;  
                             usersList[userIndexModAux].email = em;
                             usersList[userIndexModAux].pwd = passw;
                             
                             localStorageUsersList2(usersList);
-                        }
 
-                    }
+                        }   
+        
+                    }                
 
-                }else{
-                    swal({
-                        text: "The combination email/password already exists in our database.",
-                        icon: "error",
-                    });
                 }
 
             }//end else
