@@ -388,16 +388,13 @@ function logIn(){
 /** DASHBOARD */
 function dashBoard(){
     
-    let divLogOut = document.createElement("div");
-    divLogOut.id = "divLogOut";
+    let divLogOutAccSett = document.createElement("div");
+    divLogOutAccSett.id = "divLogOutAccSett";
 
     let btnLogOut = document.createElement("button");
     btnLogOut.type = "button";
     btnLogOut.id = "btnLogOut";
     btnLogOut.innerText = "Log Out";
-
-    let divAccountSettings = document.createElement("div");
-    divAccountSettings.id = "divAccountSettings";
 
     let btnAccountSettings = document.createElement("button");
     btnAccountSettings.type = "button";
@@ -406,17 +403,112 @@ function dashBoard(){
 
     let divDashBoard = document.createElement("div");
     divDashBoard.id = "divDashBoard";
-    divDashBoard.innerHTML = "<h1>WELCOME TO YOUR DASHBOARD!</h1>";
 
-    divLogOut.appendChild(btnLogOut);
-    divAccountSettings.appendChild(btnAccountSettings);
+    let btnNewList = document.createElement("button");
+    btnNewList.type = "button";
+    btnNewList.id = "btnNewList";
+    btnNewList.innerText = "NEW";
+
+    let divbtnNewList = document.createElement("div");
+    divbtnNewList.id = "divbtnNewList";
+
+    divbtnNewList.appendChild(btnNewList);
+    divDashBoard.appendChild(divbtnNewList);
+
+    divLogOutAccSett.appendChild(btnLogOut);
+    divLogOutAccSett.appendChild(btnAccountSettings);
     
-    divContainer.appendChild(divLogOut);
-    divContainer.appendChild(divAccountSettings);
+    divContainer.appendChild(divLogOutAccSett);
     divContainer.appendChild(divDashBoard);
 
     btnLogOut.addEventListener("click", removeElements);
     btnAccountSettings.addEventListener("click", accountSettings);
+
+    function loadToDoListIndex(){
+
+        btnNewList.addEventListener("click", newElement);
+
+        let divToDoListIndex = document.createElement("div");
+        divToDoListIndex.id = "divToDoListIndex";
+
+        let ulToDoList = document.createElement("ul");
+        ulToDoList.id = "ulToDoList";
+
+        divToDoListIndex.appendChild(ulToDoList);
+        divDashBoard.appendChild(divToDoListIndex);
+
+        for (var i=0; i<5; i++){
+
+            var liToDoList = document.createElement('li');
+            liToDoList.id = "liToDoList"+i;
+            //liToDoList.className = "checked";
+        
+            ulToDoList.appendChild(liToDoList);
+            liToDoList.innerHTML= "This is the toDoList number: " + i;
+        
+        }
+
+        liToDoList1.className = "checked";
+
+        // Create a "close" button and append it to each list item
+        var myNodelist = document.getElementsByTagName("LI");
+        for (let i = 0; i < 5; i++) {
+            var span = document.createElement("SPAN");
+            var txt = document.createTextNode("\u00D7");
+            span.className = "close";
+            span.appendChild(txt);
+            myNodelist[i].appendChild(span);
+        }
+
+        // Click on a close button to hide the current list item
+        var close = document.getElementsByClassName("close");
+        var i;
+        for (i = 0; i < 5; i++) {
+            close[i].onclick = function() {
+            var div = this.parentElement;
+            div.style.display = "none";
+            }
+        }
+
+        // Add a "checked" symbol when clicking on a list item
+        var list = document.querySelector('ul');
+        list.addEventListener('click', function(ev) {
+        if (ev.target.tagName === 'LI') {
+            ev.target.classList.toggle('checked');
+        }
+        }, false);
+
+        // Create a new list item when clicking on the "Add" button
+        function newElement() {
+            var li = document.createElement("li");
+            var inputValue = document.getElementById("myInput").value;
+            var t = document.createTextNode(inputValue);
+            li.appendChild(t);
+            if (inputValue === '') {
+                alert("You must write something!");
+            }else {
+                document.getElementById("myUL").appendChild(li);
+            }
+            
+            document.getElementById("myInput").value = "";
+        
+            var span = document.createElement("SPAN");
+            var txt = document.createTextNode("\u00D7");
+            span.className = "close";
+            span.appendChild(txt);
+            li.appendChild(span);
+        
+            for (i = 0; i < close.length; i++) {
+                close[i].onclick = function() {
+                var div = this.parentElement;
+                div.style.display = "none";
+                }
+            }
+
+        }
+    }
+
+    loadToDoListIndex();
 
     function removeElements(){
         
@@ -634,6 +726,8 @@ function dashBoard(){
 
         }//END askForNewData()
 
-    }//END accountSettings()
+    }//END accountSettings()   
     
 }//END dashboard()
+
+
