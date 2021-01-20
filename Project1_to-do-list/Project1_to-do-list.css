@@ -110,34 +110,31 @@ div #chkAgree{
     width: 120px;
 }
 
+#divButtons{
+    padding-bottom: 20px;
+}
+
 
 /********************** LISTS DESIGN **********************/
-
 * {
     box-sizing: border-box;
 }
 
-
-#divToDoListIndex{
-
+#divToDoListIndex, #divListView{
     text-align: left;
     margin-right: 20px;
-
+    margin-left: 20px;
 }
 
-
-#ulToDoList{
-
+#ulToDoList, #ulTaskList{
     list-style-position: inside;
     margin: 0;
     padding: 0;
     list-style-type: none;
-
 }
 
 /* Remove margins and padding from the list */
 #ulToDoList li{
-
     cursor: pointer;
     position: relative;
     padding: 12px 8px 12px 40px;
@@ -150,11 +147,29 @@ div #chkAgree{
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
 
+#ulTaskList li{
+    cursor: pointer;
+    position: relative;
+    padding: 12px 8px 12px 40px;
+    background: #eee;
+    font-size: 20px;
+    transition: 0.4s;
+
+    /* make the list items unselectable */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 /* Set all odd list items to a different color (zebra-stripes) */
 #ulToDoList li:nth-child(odd) {
+    background: #f9f9f9;
+}
+
+#ulTaskList li:nth-child(odd) {
     background: #f9f9f9;
 }
 
@@ -163,8 +178,18 @@ div #chkAgree{
     background: #ddd;
 }
 
+#ulTaskList li:hover {
+    background: #ddd;
+}
+
 /* When clicked on, add a background color and strike out text */
 #ulToDoList li.checked{
+    background: #888;
+    color: #fff;
+    /* text-decoration: line-through; */
+}
+
+#ulTaskList li.checked{
     background: #888;
     color: #fff;
     text-decoration: line-through;
@@ -174,7 +199,20 @@ div #chkAgree{
 #ulToDoList li.checked::before {
     content: '';
     position: absolute;
-    border-color: #fff;
+    border-color: #ffff;
+    border-style: solid;
+    border-width: 0 2px 2px 0;
+    top: 10px;
+    left: 16px;
+    transform: rotate(45deg);
+    height: 15px;
+    width: 7px;
+}
+
+#ulTaskList li.checked::before {
+    content: '';
+    position: absolute;
+    border-color: #ffff;
     border-style: solid;
     border-width: 0 2px 2px 0;
     top: 10px;

@@ -437,22 +437,9 @@ function dashBoard(){
         divToDoListIndex.appendChild(ulToDoList);
         divDashBoard.appendChild(divToDoListIndex);
 
-        for (var i=0; i<5; i++){
-
-            var liToDoList = document.createElement('li');
-            liToDoList.id = "liToDoList"+i;
-            //liToDoList.className = "checked";
-        
-            ulToDoList.appendChild(liToDoList);
-            liToDoList.innerHTML= "This is the toDoList number: " + i;
-        
-        }
-
-        liToDoList1.className = "checked";
-
         // Create a "close" button and append it to each list item
         var myNodelist = document.getElementsByTagName("LI");
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < myNodelist.length; i++) {
             var span = document.createElement("SPAN");
             var txt = document.createTextNode("\u00D7");
             span.className = "close";
@@ -462,8 +449,7 @@ function dashBoard(){
 
         // Click on a close button to hide the current list item
         var close = document.getElementsByClassName("close");
-        var i;
-        for (i = 0; i < 5; i++) {
+        for (let i = 0; i < close.length; i++) {
             close[i].onclick = function() {
             var div = this.parentElement;
             div.style.display = "none";
@@ -478,27 +464,141 @@ function dashBoard(){
         }
         }, false);
 
-        // Create a new list item when clicking on the "Add" button
+        // Create a new list item when clicking on the "NEW" button
         function newElement() {
+            
+            let newTDL = prompt("Please give it a name...");
             var li = document.createElement("li");
-            var inputValue = document.getElementById("myInput").value;
+            var inputValue = newTDL;
             var t = document.createTextNode(inputValue);
             li.appendChild(t);
-            if (inputValue === '') {
+
+            if (inputValue === '' || inputValue === null) {
                 alert("You must write something!");
             }else {
-                document.getElementById("myUL").appendChild(li);
+                document.getElementById("ulToDoList").appendChild(li);
             }
             
-            document.getElementById("myInput").value = "";
-        
             var span = document.createElement("SPAN");
             var txt = document.createTextNode("\u00D7");
             span.className = "close";
             span.appendChild(txt);
             li.appendChild(span);
         
-            for (i = 0; i < close.length; i++) {
+            for (let i=0; i<close.length; i++) {
+                close[i].onclick = function() {
+                var div = this.parentElement;
+                div.style.display = "none";
+                }
+            }
+
+        /*  for(let i=0; i<myNodelist.length; i++){
+                myNodelist[i].onclick = function(){
+                    listView();
+                }
+            } */
+
+        }//End newElement()
+
+    }//END loadToDoListIndex()
+
+    loadToDoListIndex();
+
+    function listView(){
+
+        divbtnNewList.style.display = "none";
+        divToDoListIndex.style.display = "none";
+
+        let divButtons = document.createElement("div");
+        divButtons.id = "divButtons";
+
+        let btnSaveList = document.createElement("button");
+        btnSaveList.type ="button";
+        btnSaveList.id = "btnSaveList";
+        btnSaveList.innerText = "SAVE LIST";
+
+        let btnBackToListIndex = document.createElement("button");
+        btnBackToListIndex.type ="button";
+        btnBackToListIndex.id = "btnBackToListIndex";
+        btnBackToListIndex.innerText = "BACK TO INDEX";
+
+        let btnRenameList = document.createElement("button");
+        btnRenameList.type = "button";
+        btnRenameList.id = "btnRenameList";
+        btnRenameList.innerText = "RENAME LIST";
+
+        let btnAddTask = document.createElement("button");
+        btnAddTask.type = "button";
+        btnAddTask.id = "btnAddTask";
+        btnAddTask.innerText = "ADD TASK";
+
+        var divListView = document.createElement("div");
+        divListView.id = "divListView";
+        
+        let ulTaskList = document.createElement("ul");
+        ulTaskList.id = "ulTaskList";
+
+        divButtons.appendChild(btnSaveList);
+        divButtons.appendChild(btnRenameList);
+        divButtons.appendChild(btnAddTask);
+        divButtons.appendChild(btnBackToListIndex);
+        divDashBoard.appendChild(divButtons);
+        divListView.appendChild(ulTaskList);
+        divDashBoard.appendChild(divListView);
+
+        /*** Showing current tasks in the list */
+
+        // Create a "close" button and append it to each list item
+        var myNodelist = document.getElementsByTagName("LI");
+        for (let i = 0; i < myNodelist.length; i++) {
+            var span = document.createElement("SPAN");
+            var txt = document.createTextNode("\u00D7");
+            span.className = "close";
+            span.appendChild(txt);
+            myNodelist[i].appendChild(span);
+        }
+
+        // Click on a close button to hide the current list item
+        var close = document.getElementsByClassName("close");
+        for (let i = 0; i < close.length; i++) {
+            close[i].onclick = function() {
+            var div = this.parentElement;
+            div.style.display = "none";
+            }
+        }
+
+        // Add a "checked" symbol when clicking on a list item
+        var list = document.querySelector('ul');
+        list.addEventListener('click', function(ev) {
+        if (ev.target.tagName === 'LI') {
+            ev.target.classList.toggle('checked');
+        }
+        }, false);
+
+        
+        btnAddTask.addEventListener("click", addTaskToList);
+
+        function addTaskToList(){
+            
+            let newTask = prompt("Please enter a task...");
+            var li = document.createElement("li");
+            var inputValue = newTask;
+            var t = document.createTextNode(inputValue);
+            li.appendChild(t);
+
+            if (inputValue === '' || inputValue === null) {
+                alert("You must write something!");
+            }else {
+                document.getElementById("ulTaskList").appendChild(li);
+            }
+            
+            var span = document.createElement("SPAN");
+            var txt = document.createTextNode("\u00D7");
+            span.className = "close";
+            span.appendChild(txt);
+            li.appendChild(span);
+        
+            for (let i=0; i<close.length; i++) {
                 close[i].onclick = function() {
                 var div = this.parentElement;
                 div.style.display = "none";
@@ -506,9 +606,8 @@ function dashBoard(){
             }
 
         }
-    }
 
-    loadToDoListIndex();
+    }//END listView()
 
     function removeElements(){
         
