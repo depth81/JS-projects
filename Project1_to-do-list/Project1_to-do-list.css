@@ -134,22 +134,7 @@ div #chkAgree{
 }
 
 /* Remove margins and padding from the list */
-#ulToDoList li{
-    cursor: pointer;
-    position: relative;
-    padding: 12px 8px 12px 40px;
-    background: #eee;
-    font-size: 20px;
-    transition: 0.4s;
-
-    /* make the list items unselectable */
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-#ulTaskList li{
+#ulToDoList li, #ulTaskList li{
     cursor: pointer;
     position: relative;
     padding: 12px 8px 12px 40px;
@@ -165,20 +150,12 @@ div #chkAgree{
 }
 
 /* Set all odd list items to a different color (zebra-stripes) */
-#ulToDoList li:nth-child(odd) {
-    background: #f9f9f9;
-}
-
-#ulTaskList li:nth-child(odd) {
+#ulToDoList li:nth-child(odd), #ulTaskList li:nth-child(odd) {
     background: #f9f9f9;
 }
 
 /* Darker background-color on hover */
-#ulToDoList li:hover {
-    background: #ddd;
-}
-
-#ulTaskList li:hover {
+#ulToDoList li:hover, #ulTaskList li:hover {
     background: #ddd;
 }
 
@@ -189,27 +166,8 @@ div #chkAgree{
     /* text-decoration: line-through; */
 }
 
-#ulTaskList li.checked{
-    background: #888;
-    color: #fff;
-    text-decoration: line-through;
-}
-
 /* Add a "checked" mark when clicked on */
-#ulToDoList li.checked::before {
-    content: '';
-    position: absolute;
-    border-color: #ffff;
-    border-style: solid;
-    border-width: 0 2px 2px 0;
-    top: 10px;
-    left: 16px;
-    transform: rotate(45deg);
-    height: 15px;
-    width: 7px;
-}
-
-#ulTaskList li.checked::before {
+#ulToDoList li.checked::before{
     content: '';
     position: absolute;
     border-color: #ffff;
