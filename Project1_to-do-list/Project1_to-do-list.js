@@ -2,7 +2,9 @@ window.addEventListener("load", landingPage);
 
 const divContainer = document.getElementById("container");
 
-let usersList = [];
+var usersList = [];
+var localToDoLists = [];
+var tasksList = [];
 var passwordGlobal = "";
 
 function localStorageUsersList(uList){
@@ -21,6 +23,14 @@ function localStorageUsersList2(uList){
     localStorage.setItem('localUsersList',JSON.stringify(uList));
     swal({
         title: "successfully modified!",
+        icon: "success",
+    });
+}
+
+function localStorageToDoList(tdList){
+    localStorage.setItem('localToDoList', JSON.stringify(tdList));
+    swal({
+        title: "The TDL was successfully stored!",
         icon: "success",
     });
 }
@@ -248,10 +258,6 @@ function signUp(){
                         console.log(newUser);
                         usersList.push(newUser);
                         localStorageUsersList(usersList);
-                        swal({
-                            title: "successfully added!",
-                            icon: "success",
-                        });
 
                     }
 
@@ -265,6 +271,7 @@ function signUp(){
     //Query users list
     var btnQueryLS = document.getElementById("btnQLS");
     btnQueryLS.addEventListener("click", getUsersList);
+    btnQueryLS.addEventListener("click", getTDL);
 
     function getUsersList(){
 
@@ -277,7 +284,21 @@ function signUp(){
             usersList = JSON.parse(storedList);
         }
         return usersList;
-    } 
+    }
+
+    function getTDL(){
+
+        var storedList2 = localStorage.getItem('localToDoList');
+        console.log(storedList2);
+
+        if(storedList2 === null){
+            localToDoLists = [];
+        }else{
+            localToDoLists = JSON.parse(storedList2);
+        }
+        return localToDoLists;
+
+    }
 
     //CLear Local Storage
     var btnCLRLS = document.getElementById("btnCLR");
@@ -450,7 +471,7 @@ function dashBoard(){
     for (let i = 0; i < close.length; i++) {
         close[i].onclick = function() {
         var div = this.parentElement;
-        div.style.display = "none";
+        ulToDoList.removeChild(div);
         }
     }
 
@@ -469,13 +490,13 @@ function dashBoard(){
     }
     }, false);
 
-
-    // Create a new element (list or task)
+    let inputValue = "";
+    // Create a new element
     function newElement() {
             
         let newTDL = prompt("Please give it a name...");
         var li = document.createElement("li");
-        var inputValue = newTDL;
+        inputValue = newTDL;
         var t = document.createTextNode(inputValue);
         li.appendChild(t);
 
@@ -494,7 +515,7 @@ function dashBoard(){
         for (let i=0; i<close.length; i++) {
             close[i].onclick = function() {
             var div = this.parentElement;
-            div.style.display = "none";
+            ulToDoList.removeChild(div);
             }
         }
 
@@ -503,6 +524,9 @@ function dashBoard(){
 
     function listView(){
 
+        divDashBoard.removeChild(divbtnNewList);
+        divDashBoard.removeChild(divToDoListIndex);
+        
         divbtnNewList.style.display = "none";
         divToDoListIndex.style.display = "none";
 
@@ -544,65 +568,86 @@ function dashBoard(){
         divDashBoard.appendChild(divListView);
 
         btnAddTask.addEventListener("click", newTaskList);
+        btnBackToListIndex.addEventListener("click", hideTaskListView);
+        btnSaveList.addEventListener("click", saveList);
+
+        function saveList(){
+            var newList = {
+                listName : inputValue,
+                email : "xxx@anything.com"
+            }
+
+            localToDoLists.push(newList);
+            localStorageToDoList(newList);
+        }
+
+        function hideTaskListView(){
+            while (divContainer.firstChild) {
+                divContainer.removeChild(divContainer.firstChild);
+            }
+            dashBoard();
+        }
 
         // Create a "close" button and append it to each list item
-        var myNodelist = document.getElementsByTagName("LI");
-        for (let i = 0; i < myNodelist.length; i++) {
-            var span = document.createElement("SPAN");
-            var txt = document.createTextNode("\u00D7");
-            span.className = "close";
-            span.appendChild(txt);
-            myNodelist[i].appendChild(span);
+        var myNodelist2 = document.getElementsByTagName("LI");
+        for (let i = 0; i < myNodelist2.length; i++) {
+            var span2 = document.createElement("SPAN");
+            var txt2 = document.createTextNode("\u00D7");
+            span2.className = "close";
+            span2.appendChild(txt2);
+            myNodelist2[i].appendChild(span2);
         }
 
         // Click on a close button to hide the current list item
-        var close = document.getElementsByClassName("close");
-        for (let i = 0; i < close.length; i++) {
-            close[i].onclick = function() {
-            var div = this.parentElement;
-            div.style.display = "none";
+        var close2 = document.getElementsByClassName("close");
+        for (let i = 0; i < close2.length; i++) {
+            close2[i].onclick = function() {
+            var div2 = this.parentElement;
+            ulTaskList.removeChild(div2);
             }
         }
 
         // Add a "checked" symbol when clicking on a list item
-        var list = document.querySelector('ul');
-        list.addEventListener('click', function(ev) {
-        if (ev.target.tagName === 'LI') {
-            ev.target.classList.toggle('checked');
+        var list2 = document.querySelector('ul');
+        list2.addEventListener('click', function(ev2) {
+        if (ev2.target.tagName === 'LI') {
+            ev2.target.classList.toggle('checked');
         }
         }, false);
+
+        // Create a new task list
+        function newTaskList() {
+            
+            var newTaskList = prompt("Please enter a task list...");
+            var litl = document.createElement("li");
+            var inputValueTL = newTaskList;
+            var tl = document.createTextNode(inputValueTL);
+            litl.appendChild(tl);
+
+            if (inputValueTL === '' || inputValueTL === null) {
+                alert("You must write something!");
+            }else {
+                document.getElementById("ulTaskList").appendChild(litl);
+            }
+            
+            var spantl = document.createElement("SPAN");
+            var txttl = document.createTextNode("\u00D7");
+            spantl.className = "close";
+            spantl.appendChild(txttl);
+            litl.appendChild(spantl);
         
+            for (let i=0; i<close2.length; i++) {
+                close2[i].onclick = function() {
+                var div2 = this.parentElement;
+                ulTaskList.removeChild(div2);
+                }
+            }
+
+        }//End newTaskList()
+
     }//END listView()
 
-    // Create a new task list
-    function newTaskList() {
-        
-        var newTaskList = prompt("Please enter a task list...");
-        var litl = document.createElement("li");
-        var inputValueTL = newTaskList;
-        var tl = document.createTextNode(inputValueTL);
-        litl.appendChild(tl);
 
-        if (inputValueTL === '' || inputValueTL === null) {
-            alert("You must write something!");
-        }else {
-            document.getElementById("ulTaskList").appendChild(litl);
-        }
-        
-        var spantl = document.createElement("SPAN");
-        var txttl = document.createTextNode("\u00D7");
-        spantl.className = "close";
-        spantl.appendChild(txttl);
-        litl.appendChild(spantl);
-    
-        for (let i=0; i<close.length; i++) {
-            close[i].onclick = function() {
-            var div = this.parentElement;
-            div.style.display = "none";
-            }
-        }
-
-    }//End newElement()
 
     function removeElements(){
         

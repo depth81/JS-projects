@@ -126,7 +126,7 @@ div #chkAgree{
     margin-left: 20px;
 }
 
-#ulToDoList, #ulTaskList{
+ul{
     list-style-position: inside;
     margin: 0;
     padding: 0;
@@ -134,7 +134,7 @@ div #chkAgree{
 }
 
 /* Remove margins and padding from the list */
-#ulToDoList li, #ulTaskList li{
+ul li{
     cursor: pointer;
     position: relative;
     padding: 12px 8px 12px 40px;
@@ -150,24 +150,25 @@ div #chkAgree{
 }
 
 /* Set all odd list items to a different color (zebra-stripes) */
-#ulToDoList li:nth-child(odd), #ulTaskList li:nth-child(odd) {
+ul li:nth-child(odd) {
     background: #f9f9f9;
 }
 
 /* Darker background-color on hover */
-#ulToDoList li:hover, #ulTaskList li:hover {
+ul li:hover {
     background: #ddd;
 }
 
 /* When clicked on, add a background color and strike out text */
-#ulToDoList li.checked{
+#ulTaskList li.checked{
     background: #888;
     color: #fff;
-    /* text-decoration: line-through; */
+    text-decoration: line-through;
 }
 
+
 /* Add a "checked" mark when clicked on */
-#ulToDoList li.checked::before{
+ul li.checked::before{
     content: '';
     position: absolute;
     border-color: #ffff;
