@@ -4,7 +4,6 @@ const divContainer = document.getElementById("container");
 
 var usersList = [];
 var localToDoLists = [];
-var tasksList = [];
 var passwordGlobal = "";
 
 function localStorageUsersList(uList){
@@ -490,7 +489,7 @@ function dashBoard(){
     }
     }, false);
 
-    let inputValue = "";
+    let inputValue;
     // Create a new element
     function newElement() {
             
@@ -500,9 +499,12 @@ function dashBoard(){
         var t = document.createTextNode(inputValue);
         li.appendChild(t);
 
-        if (inputValue === '' || inputValue === null) {
+        if (inputValue === '') {
             alert("You must write something!");
-        }else {
+        }else if(inputValue === null){
+            return;
+        }
+        else{
             document.getElementById("ulToDoList").appendChild(li);
         }
         
@@ -571,14 +573,31 @@ function dashBoard(){
         btnBackToListIndex.addEventListener("click", hideTaskListView);
         btnSaveList.addEventListener("click", saveList);
 
+        var myNodelist2 = document.getElementsByTagName("LI");
+        
         function saveList(){
-            var newList = {
-                listName : inputValue,
-                email : "xxx@anything.com"
+
+            let tasksList = [];
+
+            for(let i=0; i<myNodelist2.length; i++){
+                var listDesc = myNodelist2[i].firstChild.textContent;
+                tasksList.push(listDesc);
             }
 
-            localToDoLists.push(newList);
-            localStorageToDoList(newList);
+            saveListIndex(inputValue, emailGlobal, tasksList);
+
+            function saveListIndex(iv, emG, tskl){
+            
+                var newList = {
+                    listName : iv,
+                    OwnerEmail :emG,
+                    tasksSummary: tskl
+                }
+    
+                localToDoLists.push(newList);
+                console.log(localToDoLists);    
+                localStorageToDoList(localToDoLists);
+            }
         }
 
         function hideTaskListView(){
@@ -589,7 +608,7 @@ function dashBoard(){
         }
 
         // Create a "close" button and append it to each list item
-        var myNodelist2 = document.getElementsByTagName("LI");
+        //var myNodelist2 = document.getElementsByTagName("LI");
         for (let i = 0; i < myNodelist2.length; i++) {
             var span2 = document.createElement("SPAN");
             var txt2 = document.createTextNode("\u00D7");
@@ -624,9 +643,12 @@ function dashBoard(){
             var tl = document.createTextNode(inputValueTL);
             litl.appendChild(tl);
 
-            if (inputValueTL === '' || inputValueTL === null) {
+            if (inputValueTL === '') {
                 alert("You must write something!");
-            }else {
+            }else if(inputValueTL === null){
+                return;
+            }
+            else{
                 document.getElementById("ulTaskList").appendChild(litl);
             }
             
@@ -810,6 +832,7 @@ function dashBoard(){
                                 usersList[indexCurrentEmail].lName = ln;  
                                 usersList[indexCurrentEmail].email = em;
                                 usersList[indexCurrentEmail].pwd = passw;
+                                emailGlobal = em;
                                 localStorageUsersList2(usersList);
 
                             }else{
@@ -819,6 +842,7 @@ function dashBoard(){
                                     usersList[indexCurrentEmail].fName = fn;
                                     usersList[indexCurrentEmail].lName = ln;  
                                     usersList[indexCurrentEmail].email = em;
+                                    emailGlobal = em;
                                     usersList[indexCurrentEmail].pwd = passw;
                                     localStorageUsersList2(usersList);
 
