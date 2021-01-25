@@ -43,12 +43,18 @@ function checkingEmail(e){
     }else{
         usersList = JSON.parse(storedList);
     }
-
+    
     let index = usersList.findIndex(user => user.email === e);
-
     return index;
-
 }
+
+function verifyListUniqueName(inpName, anEmail){
+    var index1 = localToDoLists.findIndex( element => (element.listName === inpName) && (element.ownerEmail === anEmail));
+    return(index1);
+}
+
+
+/**GUI */
 
 function landingPage(){
 
@@ -505,7 +511,15 @@ function dashBoard(){
             return;
         }
         else{
-            document.getElementById("ulToDoList").appendChild(li);
+            var index1 = verifyListUniqueName(inputValue, emailGlobal);
+            if(index1 === -1){
+                document.getElementById("ulToDoList").appendChild(li);
+            }else{
+                swal({
+                    text: "That name already exists for another to-do-list!",
+                    icon: "error",
+                })
+            }
         }
         
         var span = document.createElement("SPAN");
@@ -522,17 +536,6 @@ function dashBoard(){
         }
 
     }//End newElement()
-
-    /* function verifyListUniqueName(inpName, anEmail){
-        var filteredUsersList = localToDoLists.filter(el => el.OwnerEmail === anEmail);
-        console.log(filteredUsersList);
-        let index = filteredUsersList.findIndex( element => {
-            if (element.listName === inpName) {
-                return true;
-            }
-        });
-        return index;
-    } */
 
     function listView(){
 
@@ -602,30 +605,21 @@ function dashBoard(){
             
                 var newList = {
                     listName : iv,
-                    OwnerEmail :emG,
+                    ownerEmail :emG,
                     tasksSummary: tskl
                 }
 
                 var listNameIndex = verifyListUniqueName(iv, emG);
+                console.log(listNameIndex);
 
                 if (listNameIndex === -1){
                     localToDoLists.push(newList);
-                    console.log(localToDoLists);
-                    localStorageToDoList(localToDoLists);
-                }else{
-                    let overwrite = confirm("overwrite???");
-                    if(overwrite){
-                        localToDoLists[listNameIndex] = newList;
-                        console.log(localToDoLists);    
-                        localStorageToDoList(localToDoLists);
-                    }else{
-                        alert("CAN'T SAVE!");
-                        console.log(localToDoLists);
-                        hideTaskListView();
-                    }
                     
+                }else{
+                    localToDoLists[listNameIndex] = newList;
                 }
-    
+                console.log(localToDoLists);
+                localStorageToDoList(localToDoLists);
             }
         }//END saveList()
 
@@ -634,16 +628,6 @@ function dashBoard(){
                 divContainer.removeChild(divContainer.firstChild);
             }
             dashBoard();
-        }
-
-        function verifyListUniqueName(inpName, anEmail){
-            var filteredUsersList = localToDoLists.filter(el => el.OwnerEmail === anEmail);
-            let index = filteredUsersList.findIndex( element => {
-                if (element.listName === inpName) {
-                    return true;
-                }
-            });
-            return index;
         }
 
         // Create a "close" button and append it to each list item
