@@ -523,8 +523,20 @@ function dashBoard(){
 
     }//End newElement()
 
+    /* function verifyListUniqueName(inpName, anEmail){
+        var filteredUsersList = localToDoLists.filter(el => el.OwnerEmail === anEmail);
+        console.log(filteredUsersList);
+        let index = filteredUsersList.findIndex( element => {
+            if (element.listName === inpName) {
+                return true;
+            }
+        });
+        return index;
+    } */
 
     function listView(){
+
+        console.log(inputValue);
 
         divDashBoard.removeChild(divbtnNewList);
         divDashBoard.removeChild(divToDoListIndex);
@@ -574,9 +586,9 @@ function dashBoard(){
         btnSaveList.addEventListener("click", saveList);
 
         var myNodelist2 = document.getElementsByTagName("LI");
-        
+    
         function saveList(){
-
+            
             let tasksList = [];
 
             for(let i=0; i<myNodelist2.length; i++){
@@ -593,18 +605,45 @@ function dashBoard(){
                     OwnerEmail :emG,
                     tasksSummary: tskl
                 }
+
+                var listNameIndex = verifyListUniqueName(iv, emG);
+
+                if (listNameIndex === -1){
+                    localToDoLists.push(newList);
+                    console.log(localToDoLists);
+                    localStorageToDoList(localToDoLists);
+                }else{
+                    let overwrite = confirm("overwrite???");
+                    if(overwrite){
+                        localToDoLists[listNameIndex] = newList;
+                        console.log(localToDoLists);    
+                        localStorageToDoList(localToDoLists);
+                    }else{
+                        alert("CAN'T SAVE!");
+                        console.log(localToDoLists);
+                        hideTaskListView();
+                    }
+                    
+                }
     
-                localToDoLists.push(newList);
-                console.log(localToDoLists);    
-                localStorageToDoList(localToDoLists);
             }
-        }
+        }//END saveList()
 
         function hideTaskListView(){
             while (divContainer.firstChild) {
                 divContainer.removeChild(divContainer.firstChild);
             }
             dashBoard();
+        }
+
+        function verifyListUniqueName(inpName, anEmail){
+            var filteredUsersList = localToDoLists.filter(el => el.OwnerEmail === anEmail);
+            let index = filteredUsersList.findIndex( element => {
+                if (element.listName === inpName) {
+                    return true;
+                }
+            });
+            return index;
         }
 
         // Create a "close" button and append it to each list item
@@ -668,8 +707,6 @@ function dashBoard(){
         }//End newTaskList()
 
     }//END listView()
-
-
 
     function removeElements(){
         
