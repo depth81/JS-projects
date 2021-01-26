@@ -282,7 +282,6 @@ function signUp(){
     function getUsersList(){
 
         var storedList = localStorage.getItem('localUsersList');
-        console.log(storedList);
 
         if(storedList === null){
             usersList = [];
@@ -295,7 +294,6 @@ function signUp(){
     function getTDL(){
 
         var storedList2 = localStorage.getItem('localToDoList');
-        console.log(storedList2);
 
         if(storedList2 === null){
             localToDoLists = [];
@@ -932,8 +930,6 @@ function dashBoard(){
                     });               
                 
                 }
-
-            console.log(usersList);
 
             }//END validation if...else
 
