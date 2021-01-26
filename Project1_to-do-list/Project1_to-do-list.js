@@ -499,10 +499,20 @@ function dashBoard(){
     
     // Create a new element
     function newElement() {
-            
-        let newTDL = prompt("Please give it a name...");
-        var li = document.createElement("li");
+
+        let newTDL = "";
+
+        while(newTDL === ""){
+            newTDL = prompt("Please give the TDL a name");
+        }
+
+        if(newTDL === null){
+            return;
+        }
+
         inputValue = newTDL;
+        
+        var li = document.createElement("li");
         var t = document.createTextNode(inputValue);
         li.appendChild(t);
 
