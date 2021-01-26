@@ -542,8 +542,6 @@ function dashBoard(){
 
     function listView(){
 
-        console.log(inputValue);
-
         divDashBoard.removeChild(divbtnNewList);
         divDashBoard.removeChild(divToDoListIndex);
         
@@ -614,7 +612,6 @@ function dashBoard(){
                 }
 
                 var listNameIndex = verifyListUniqueName(iv, emG);
-                console.log(listNameIndex);
 
                 if (listNameIndex === -1){
                     localToDoLists.push(newList);    
@@ -646,7 +643,6 @@ function dashBoard(){
             }
 
             inputValue2 = newTDLname;
-            console.log(inputValue2);
 
             let idxOriginal = verifyListUniqueName(inputValue, emailGlobal);
             let indexC = verifyListUniqueName(inputValue2, emailGlobal);
@@ -871,15 +867,12 @@ function dashBoard(){
 
                 currentEmail = prompt("Please enter your current email");
                 let indexCurrentEmail = checkingEmail(currentEmail);
-                console.log(indexCurrentEmail);
-                console.log(currentEmail);
 
                 if(currentEmail !== null){
 
                     if(currentEmail !== ""){
 
                         userIndexMod = checkingEmail(em);
-                        console.log(userIndexMod);
                         
                         if(indexCurrentEmail !== -1){
 
