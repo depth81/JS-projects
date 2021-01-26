@@ -5,6 +5,7 @@ const divContainer = document.getElementById("container");
 var usersList = [];
 var localToDoLists = [];
 var passwordGlobal = "";
+let inputValue;
 
 function localStorageUsersList(uList){
     localStorage.setItem('localUsersList',JSON.stringify(uList));
@@ -50,7 +51,7 @@ function checkingEmail(e){
 
 function verifyListUniqueName(inpName, anEmail){
     var index1 = localToDoLists.findIndex( element => (element.listName === inpName) && (element.ownerEmail === anEmail));
-    return(index1);
+    return index1;
 }
 
 
@@ -495,7 +496,7 @@ function dashBoard(){
     }
     }, false);
 
-    let inputValue;
+    
     // Create a new element
     function newElement() {
             
@@ -587,11 +588,12 @@ function dashBoard(){
         btnAddTask.addEventListener("click", newTaskList);
         btnBackToListIndex.addEventListener("click", hideTaskListView);
         btnSaveList.addEventListener("click", saveList);
+        btnRenameList.addEventListener("click", renameList);
 
         var myNodelist2 = document.getElementsByTagName("LI");
     
         function saveList(){
-            
+
             let tasksList = [];
 
             for(let i=0; i<myNodelist2.length; i++){
@@ -613,8 +615,7 @@ function dashBoard(){
                 console.log(listNameIndex);
 
                 if (listNameIndex === -1){
-                    localToDoLists.push(newList);
-                    
+                    localToDoLists.push(newList);    
                 }else{
                     localToDoLists[listNameIndex] = newList;
                 }
@@ -629,6 +630,36 @@ function dashBoard(){
             }
             dashBoard();
         }
+
+        function renameList(){
+
+            let newTDLname = "";
+
+            while(newTDLname === ""){
+                newTDLname = prompt("Please enter a new TDL name");
+            }
+
+            if(newTDLname === null){
+                return;
+            }
+
+            inputValue2 = newTDLname;
+            console.log(inputValue2);
+
+            let idxOriginal = verifyListUniqueName(inputValue, emailGlobal);
+            let indexC = verifyListUniqueName(inputValue2, emailGlobal);
+
+            if(indexC === -1){
+                localToDoLists[idxOriginal].listName = inputValue2;
+                console.log(localToDoLists);
+                localStorageToDoList(localToDoLists);
+                inputValue = inputValue2;
+            }else{
+                alert("sorry, you will have to choose another name");
+            }
+
+        }//END renameList()
+
 
         // Create a "close" button and append it to each list item
         //var myNodelist2 = document.getElementsByTagName("LI");
