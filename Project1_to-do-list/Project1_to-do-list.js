@@ -384,9 +384,11 @@ function logIn(){
         
         emailGlobal = em;
         
-        for(let user of users){
-            if (em === user.email && passw === user.pwd){
-                counter+=1;
+        if(users){
+            for(let user of users){
+                if (em === user.email && passw === user.pwd){
+                    counter+=1;
+                }
             }
         }
 
@@ -655,7 +657,10 @@ function dashBoard(){
                 localStorageToDoList(localToDoLists);
                 inputValue = inputValue2;
             }else{
-                alert("sorry, you will have to choose another name");
+                swal({
+                    text: "That name already exists for another to-do-list!",
+                    icon: "error",
+                })
             }
 
         }//END renameList()
