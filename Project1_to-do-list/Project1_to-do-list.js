@@ -194,6 +194,7 @@ function signUp(){
     btnHome.addEventListener("click", removingElementsSUHome);
     btnCLRSU.addEventListener("click", clearSignUpUserData);
 
+
     function removingElementsSUHome(){
         divContainer.removeChild(myForm);
         landingPage();
@@ -278,7 +279,7 @@ function signUp(){
     var btnQueryLS = document.getElementById("btnQLS");
     btnQueryLS.addEventListener("click", getUsersList);
     btnQueryLS.addEventListener("click", getTDL);
-
+    
     function getUsersList(){
 
         var storedList = localStorage.getItem('localUsersList');
@@ -288,7 +289,7 @@ function signUp(){
         }else{
             usersList = JSON.parse(storedList);
         }
-        return usersList;
+        console.log(usersList);
     }
 
     function getTDL(){
@@ -300,7 +301,7 @@ function signUp(){
         }else{
             localToDoLists = JSON.parse(storedList2);
         }
-        return localToDoLists;
+        console.log(localToDoLists);
 
     }
 
@@ -414,7 +415,7 @@ function logIn(){
 
 /** DASHBOARD */
 function dashBoard(){
-    
+
     let divLogOutAccSett = document.createElement("div");
     divLogOutAccSett.id = "divLogOutAccSett";
 
@@ -492,7 +493,7 @@ function dashBoard(){
     //go to listView when click on a list
     list.addEventListener('click', function(ev) {
     if (ev.target.tagName === 'LI') {
-        listView();
+        listView(ev.target.innerText);
     }
     }, false);
 
@@ -548,10 +549,34 @@ function dashBoard(){
 
     }//End newElement()
 
-    function listView(){
+
+    loadAndAppendElements();
+
+    function loadAndAppendElements(){
+
+        var storedList = localStorage.getItem('localToDoList');
+        
+        if(storedList === null){
+            usersList = [];
+        }else{
+            usersList = JSON.parse(storedList);
+        }
+
+        var userOwnLists = usersList.filter(el => el.ownerEmail === emailGlobal);
+
+        for (let i=0; i< userOwnLists.length; i++){
+            var li = document.createElement("li");
+            li.appendChild(document.createTextNode(userOwnLists[i].listName));
+            ulToDoList.appendChild(li);
+        }
+    }
+
+    function listView(liText){
 
         divDashBoard.removeChild(divbtnNewList);
         divDashBoard.removeChild(divToDoListIndex);
+
+        
         
         divbtnNewList.style.display = "none";
         divToDoListIndex.style.display = "none";
@@ -598,6 +623,31 @@ function dashBoard(){
         btnSaveList.addEventListener("click", saveList);
         btnRenameList.addEventListener("click", renameList);
 
+        loadAndAppendTasks(liText);
+
+        function loadAndAppendTasks(liDescr){
+
+            var storedList = localStorage.getItem('localToDoList');
+        
+            if(storedList === null){
+                localToDoLists = [];
+            }else{
+                localToDoLists = JSON.parse(storedList);
+            }
+            
+            var specificListContent = localToDoLists.filter(el => el.ownerEmail === emailGlobal && el.listName === liDescr);
+            console.log(specificListContent);
+            let result = specificListContent.map(a => a.tasksSummary);
+            console.log(result);
+            
+            for (let i=0; i < result.length; i++){
+                var li = document.createElement("li");
+                li.appendChild(document.createTextNode(result[i]));
+                ulTaskList.appendChild(li);
+            }
+            
+        }//END loadAndAppendTasks
+
         var myNodelist2 = document.getElementsByTagName("LI");
     
         function saveList(){
@@ -640,6 +690,17 @@ function dashBoard(){
 
         function renameList(){
 
+            let idxOriginal = verifyListUniqueName(inputValue, emailGlobal);
+
+            if(idxOriginal === -1){
+                swal({
+                    title: "Please save the TDL first",
+                    text: "you haven't saved the list yet. You cannot rename it at this time!",
+                    icon: "info",
+                });
+                return;
+            }
+
             let newTDLname = "";
 
             while(newTDLname === ""){
@@ -652,7 +713,6 @@ function dashBoard(){
 
             inputValue2 = newTDLname;
 
-            let idxOriginal = verifyListUniqueName(inputValue, emailGlobal);
             let indexC = verifyListUniqueName(inputValue2, emailGlobal);
 
             if(indexC === -1){
