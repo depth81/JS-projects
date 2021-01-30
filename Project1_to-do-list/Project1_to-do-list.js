@@ -5,7 +5,8 @@ const divContainer = document.getElementById("container");
 var usersList = [];
 var localToDoLists = [];
 var passwordGlobal = "";
-let inputValue;
+var inputValue = "";
+var thisIsIt = "";
 
 function localStorageUsersList(uList){
     localStorage.setItem('localUsersList',JSON.stringify(uList));
@@ -464,7 +465,7 @@ function dashBoard(){
     divDashBoard.appendChild(divToDoListIndex);
 
     // Create a "close" button and append it to each list item
-    var myNodelist = document.getElementsByTagName("LI");
+    /* var myNodelist = document.getElementsByTagName("LI");
     for (let i = 0; i < myNodelist.length; i++) {
         var span = document.createElement("SPAN");
         var txt = document.createTextNode("\u00D7");
@@ -472,15 +473,15 @@ function dashBoard(){
         span.appendChild(txt);
         myNodelist[i].appendChild(span);
     }
-
+ */
     // Click on a close button to hide the current list item
-    var close = document.getElementsByClassName("close");
+    /* var close = document.getElementsByClassName("close");
     for (let i = 0; i < close.length; i++) {
         close[i].onclick = function() {
         var div = this.parentElement;
         ulToDoList.removeChild(div);
         }
-    }
+    } */
 
     // Add a "checked" symbol when clicking on a list item
     var list = document.querySelector('ul');
@@ -493,11 +494,11 @@ function dashBoard(){
     //go to listView when click on a list
     list.addEventListener('click', function(ev) {
     if (ev.target.tagName === 'LI') {
-        listView(ev.target.innerText);
+        thisIsIt = ev.target.innerText;
+        listView(thisIsIt);
     }
     }, false);
 
-    
     // Create a new element
     function newElement() {
 
@@ -534,11 +535,11 @@ function dashBoard(){
             }
         }
         
-        var span = document.createElement("SPAN");
+        /* var span = document.createElement("SPAN");
         var txt = document.createTextNode("\u00D7");
         span.className = "close";
         span.appendChild(txt);
-        li.appendChild(span);
+        li.appendChild(span); */
     
         for (let i=0; i<close.length; i++) {
             close[i].onclick = function() {
@@ -548,7 +549,6 @@ function dashBoard(){
         }
 
     }//End newElement()
-
 
     loadAndAppendElements();
 
@@ -571,13 +571,13 @@ function dashBoard(){
         }
     }
 
-    function listView(liText){
+    var myNodelist2 = document.getElementsByTagName("LI");
 
+    function listView(liText){
+    
         divDashBoard.removeChild(divbtnNewList);
         divDashBoard.removeChild(divToDoListIndex);
 
-        
-        
         divbtnNewList.style.display = "none";
         divToDoListIndex.style.display = "none";
 
@@ -634,52 +634,23 @@ function dashBoard(){
             }else{
                 localToDoLists = JSON.parse(storedList);
             }
-            
+
             var specificListContent = localToDoLists.filter(el => el.ownerEmail === emailGlobal && el.listName === liDescr);
-            console.log(specificListContent);
-            let result = specificListContent.map(a => a.tasksSummary);
-            console.log(result);
-            
-            for (let i=0; i < result.length; i++){
-                var li = document.createElement("li");
-                li.appendChild(document.createTextNode(result[i]));
-                ulTaskList.appendChild(li);
-            }
-            
-        }//END loadAndAppendTasks
+            var objLeng = Object.entries(specificListContent).length;
 
-        var myNodelist2 = document.getElementsByTagName("LI");
-    
-        function saveList(){
-
-            let tasksList = [];
-
-            for(let i=0; i<myNodelist2.length; i++){
-                var listDesc = myNodelist2[i].firstChild.textContent;
-                tasksList.push(listDesc);
-            }
-
-            saveListIndex(inputValue, emailGlobal, tasksList);
-
-            function saveListIndex(iv, emG, tskl){
-            
-                var newList = {
-                    listName : iv,
-                    ownerEmail :emG,
-                    tasksSummary: tskl
+            if(objLeng !== 0){
+                
+                let result = specificListContent.map(a => a.tasksSummary);
+                let content = result[0];
+                
+                for (let i=0; i < content.length; i++){
+                    var li = document.createElement("li");
+                    li.appendChild(document.createTextNode(content[i]));
+                    ulTaskList.appendChild(li);
                 }
-
-                var listNameIndex = verifyListUniqueName(iv, emG);
-
-                if (listNameIndex === -1){
-                    localToDoLists.push(newList);    
-                }else{
-                    localToDoLists[listNameIndex] = newList;
-                }
-                console.log(localToDoLists);
-                localStorageToDoList(localToDoLists);
             }
-        }//END saveList()
+            
+        }//END loadAndAppendTasks()
 
         function hideTaskListView(){
             while (divContainer.firstChild) {
@@ -687,47 +658,6 @@ function dashBoard(){
             }
             dashBoard();
         }
-
-        function renameList(){
-
-            let idxOriginal = verifyListUniqueName(inputValue, emailGlobal);
-
-            if(idxOriginal === -1){
-                swal({
-                    title: "Please save the TDL first",
-                    text: "you haven't saved the list yet. You cannot rename it at this time!",
-                    icon: "info",
-                });
-                return;
-            }
-
-            let newTDLname = "";
-
-            while(newTDLname === ""){
-                newTDLname = prompt("Please enter a new TDL name");
-            }
-
-            if(newTDLname === null){
-                return;
-            }
-
-            inputValue2 = newTDLname;
-
-            let indexC = verifyListUniqueName(inputValue2, emailGlobal);
-
-            if(indexC === -1){
-                localToDoLists[idxOriginal].listName = inputValue2;
-                console.log(localToDoLists);
-                localStorageToDoList(localToDoLists);
-                inputValue = inputValue2;
-            }else{
-                swal({
-                    text: "That name already exists for another to-do-list!",
-                    icon: "error",
-                })
-            }
-
-        }//END renameList()
 
 
         // Create a "close" button and append it to each list item
@@ -789,6 +719,81 @@ function dashBoard(){
             }
 
         }//End newTaskList()
+
+        function saveList(){
+
+            let tasksList = [];
+
+            for(let i=0; i<myNodelist2.length; i++){
+                var listDesc = myNodelist2[i].firstChild.textContent;
+                tasksList.push(listDesc);
+            }
+
+            saveListIndex(thisIsIt, emailGlobal, tasksList);
+
+            function saveListIndex(iv, emG, tskl){
+            
+                var newList = {
+                    listName : iv,
+                    ownerEmail :emG,
+                    tasksSummary: tskl
+                }
+
+                var listNameIndex = verifyListUniqueName(iv, emG);
+
+                if (listNameIndex === -1){
+                    localToDoLists.push(newList);    
+                }else{
+                    localToDoLists[listNameIndex] = newList;
+                }
+                console.log(localToDoLists);
+                localStorageToDoList(localToDoLists);
+            }
+
+            console.log(myNodelist2);
+
+        }//END saveList()
+
+        function renameList(){
+
+            let idxOriginal = verifyListUniqueName(thisIsIt, emailGlobal);
+
+            if(idxOriginal === -1){
+                swal({
+                    title: "Please save the TDL first",
+                    text: "you haven't saved the list yet. You cannot rename it at this time!",
+                    icon: "info",
+                });
+                return;
+            }
+
+            let newTDLname = "";
+
+            while(newTDLname === ""){
+                newTDLname = prompt("Please enter a new TDL name");
+            }
+
+            if(newTDLname === null){
+                return;
+            }
+
+            inputValue2 = newTDLname;
+
+            let indexC = verifyListUniqueName(inputValue2, emailGlobal);
+
+            if(indexC === -1){
+                localToDoLists[idxOriginal].listName = inputValue2;
+                console.log(localToDoLists);
+                localStorageToDoList(localToDoLists);
+                inputValue = inputValue2;
+            }else{
+                swal({
+                    text: "That name already exists for another to-do-list!",
+                    icon: "error",
+                })
+            }
+
+        }//END renameList()
 
     }//END listView()
 

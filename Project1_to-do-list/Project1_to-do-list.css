@@ -17,7 +17,7 @@ h2{
 #container {
     text-align: center;
     background-color: #cfe9ea;
-    height: auto;
+    height: 1000px;
     padding-top: 40px;
     padding-left: 20px;
     padding-bottom: 50px;
@@ -64,9 +64,11 @@ div #chkAgree{
 }
 
 #divDashBoard{
-    height: 550px;
-    padding-top: 50px;
+    height: auto;
+    padding-top: 20px;
+    padding-bottom: 50px;
     margin-top: 50px;
+    margin-bottom: 50px;
     border: black solid 2px;
 }
 
