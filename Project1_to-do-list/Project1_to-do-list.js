@@ -36,6 +36,14 @@ function localStorageToDoList(tdList){
     });
 }
 
+function localStorageToDoList2(tdList){
+    localStorage.setItem('localToDoList', JSON.stringify(tdList));
+    swal({
+        title: "The TDL was successfully deleted!",
+        icon: "success",
+    });
+}
+
 function checkingEmail(e){
 
     var storedList = localStorage.getItem('localUsersList');
@@ -464,25 +472,6 @@ function dashBoard(){
     divToDoListIndex.appendChild(ulToDoList);
     divDashBoard.appendChild(divToDoListIndex);
 
-    // Create a "close" button and append it to each list item
-    /* var myNodelist = document.getElementsByTagName("LI");
-    for (let i = 0; i < myNodelist.length; i++) {
-        var span = document.createElement("SPAN");
-        var txt = document.createTextNode("\u00D7");
-        span.className = "close";
-        span.appendChild(txt);
-        myNodelist[i].appendChild(span);
-    }
- */
-    // Click on a close button to hide the current list item
-    /* var close = document.getElementsByClassName("close");
-    for (let i = 0; i < close.length; i++) {
-        close[i].onclick = function() {
-        var div = this.parentElement;
-        ulToDoList.removeChild(div);
-        }
-    } */
-
     // Add a "checked" symbol when clicking on a list item
     var list = document.querySelector('ul');
     list.addEventListener('click', function(ev) {
@@ -534,12 +523,6 @@ function dashBoard(){
                 })
             }
         }
-        
-        /* var span = document.createElement("SPAN");
-        var txt = document.createTextNode("\u00D7");
-        span.className = "close";
-        span.appendChild(txt);
-        li.appendChild(span); */
     
         for (let i=0; i<close.length; i++) {
             close[i].onclick = function() {
@@ -604,6 +587,11 @@ function dashBoard(){
         btnAddTask.id = "btnAddTask";
         btnAddTask.innerText = "ADD TASK";
 
+        let btnDeleteList = document.createElement("button");
+        btnDeleteList.type = "button";
+        btnDeleteList.id = "btnDeleteList";
+        btnDeleteList.innerText = "DELETE LIST";
+
         var divListView = document.createElement("div");
         divListView.id = "divListView";
         
@@ -614,6 +602,7 @@ function dashBoard(){
         divButtons.appendChild(btnRenameList);
         divButtons.appendChild(btnAddTask);
         divButtons.appendChild(btnBackToListIndex);
+        divButtons.appendChild(btnDeleteList);
         divDashBoard.appendChild(divButtons);
         divListView.appendChild(ulTaskList);
         divDashBoard.appendChild(divListView);
@@ -622,6 +611,7 @@ function dashBoard(){
         btnBackToListIndex.addEventListener("click", hideTaskListView);
         btnSaveList.addEventListener("click", saveList);
         btnRenameList.addEventListener("click", renameList);
+        btnDeleteList.addEventListener("click", deleteList);
 
         loadAndAppendTasks(liText);
 
@@ -750,8 +740,6 @@ function dashBoard(){
                 localStorageToDoList(localToDoLists);
             }
 
-            console.log(myNodelist2);
-
         }//END saveList()
 
         function renameList(){
@@ -794,6 +782,46 @@ function dashBoard(){
             }
 
         }//END renameList()
+
+        function deleteList(){
+
+            console.log(emailGlobal);
+            console.log(thisIsIt);
+
+            let deleteList = confirm("are you sure???");
+
+            if(deleteList){
+                //verify if the list has been already saved
+                let idxOriginal = verifyListUniqueName(thisIsIt, emailGlobal);
+                console.log(idxOriginal);
+
+                if(idxOriginal === -1){
+                    swal({
+                        title: "Please save the TDL first",
+                        text: "you haven't saved the list yet. You cannot delete it at this time!",
+                        icon: "info",
+                    });
+                    return;
+                }else{ //Proceed to delete
+                    console.log(localToDoLists);
+                    //localToDoLists = localToDoLists.filter(el => el.ownerEmail === emailGlobal && el.listName !== thisIsIt);
+                    for( var i = 0; i < localToDoLists.length; i++){ 
+    
+                        if ( localToDoLists[i].ownerEmail === emailGlobal && localToDoLists[i].listName === thisIsIt ) { 
+                    
+                            localToDoLists.splice(i, 1); 
+                        }
+                    
+                    }
+                    console.log(localToDoLists);
+                    localStorageToDoList2(localToDoLists);
+                    hideTaskListView();
+                }
+            }else{//The user didn't want to delete the list
+                return false;
+            }
+
+        }//END deleteList()
 
     }//END listView()
 
