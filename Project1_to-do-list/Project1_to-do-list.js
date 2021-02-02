@@ -809,7 +809,8 @@ function dashBoard(){
     
                         if ( localToDoLists[i].ownerEmail === emailGlobal && localToDoLists[i].listName === thisIsIt ) { 
                     
-                            localToDoLists.splice(i, 1); 
+                            localToDoLists.splice(i, 1);
+                            i--;
                         }
                     
                     }
