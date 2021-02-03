@@ -987,6 +987,17 @@ function dashBoard(){
                                 emailGlobal = em;
                                 localStorageUsersList2(usersList);
 
+                                //update ownerEmail in localToDoLists if it was changed.
+                                for(let x of localToDoLists){
+                                    if(x.ownerEmail === currentEmail){
+                                        x.ownerEmail = em;
+                                    }
+                                }
+
+                                console.log(localToDoLists);
+                                localStorageToDoList(localToDoLists);
+                                
+
                             }else{
 
                                 if(em === currentEmail){
@@ -999,6 +1010,7 @@ function dashBoard(){
                                     localStorageUsersList2(usersList);
 
                                 }else{
+
                                     swal({
                                         text: "This email already exists!",
                                         icon: "error",
@@ -1033,7 +1045,7 @@ function dashBoard(){
                         icon: "error",
                     });               
                 
-                }
+                }//end if currentEmail is null
 
             }//END validation if...else
 
