@@ -461,7 +461,7 @@ function dashBoard(){
     btnLogOut.addEventListener("click", removeElements);
     btnAccountSettings.addEventListener("click", accountSettings);
 
-    btnNewList.addEventListener("click", newElement);
+    btnNewList.addEventListener("click", addNewList);
 
     let divToDoListIndex = document.createElement("div");
     divToDoListIndex.id = "divToDoListIndex";
@@ -489,7 +489,7 @@ function dashBoard(){
     }, false);
 
     // Create a new element
-    function newElement() {
+    function addNewList() {
 
         let newTDL = "";
 
@@ -516,6 +516,8 @@ function dashBoard(){
             var index1 = verifyListUniqueName(inputValue, emailGlobal);
             if(index1 === -1){
                 document.getElementById("ulToDoList").appendChild(li);
+                thisIsIt = inputValue;
+                listView(thisIsIt);
             }else{
                 swal({
                     text: "That name already exists for another to-do-list!",
@@ -632,23 +634,31 @@ function dashBoard(){
                 
                 let result = specificListContent.map(a => a.tasksSummary);
                 let content = result[0];
+
+                let tm = specificListContent.map(t => t.tasksMarked);
+                let tmContent = tm[0];
                 
                 for (let i=0; i < content.length; i++){
                     var li = document.createElement("li");
                     li.appendChild(document.createTextNode(content[i]));
+                    if(tmContent[i]===true){
+                        li.classList.add('checked');
+                    }else{
+                        li.classList.remove('checked');
+                    }
                     ulTaskList.appendChild(li);
                 }
+
             }
             
         }//END loadAndAppendTasks()
-
+        
         function hideTaskListView(){
             while (divContainer.firstChild) {
                 divContainer.removeChild(divContainer.firstChild);
             }
             dashBoard();
         }
-
 
         // Create a "close" button and append it to each list item
         //var myNodelist2 = document.getElementsByTagName("LI");
@@ -711,22 +721,25 @@ function dashBoard(){
         }//End newTaskList()
 
         function saveList(){
-
+            
+            let isMarkedOrNot = [];
             let tasksList = [];
 
-            for(let i=0; i<myNodelist2.length; i++){
+            for(let i=0; i<myNodelist2.length; i++){        
                 var listDesc = myNodelist2[i].firstChild.textContent;
                 tasksList.push(listDesc);
+                isMarkedOrNot.push(myNodelist2[i].classList.contains('checked'));
             }
 
-            saveListIndex(thisIsIt, emailGlobal, tasksList);
+            saveListIndex(thisIsIt, emailGlobal, tasksList, isMarkedOrNot);
 
-            function saveListIndex(iv, emG, tskl){
+            function saveListIndex(iv, emG, tskl, tskM){
             
                 var newList = {
                     listName : iv,
                     ownerEmail :emG,
-                    tasksSummary: tskl
+                    tasksSummary: tskl,
+                    tasksMarked: tskM
                 }
 
                 var listNameIndex = verifyListUniqueName(iv, emG);
@@ -785,15 +798,11 @@ function dashBoard(){
 
         function deleteList(){
 
-            console.log(emailGlobal);
-            console.log(thisIsIt);
-
             let deleteList = confirm("are you sure???");
 
             if(deleteList){
                 //verify if the list has been already saved
                 let idxOriginal = verifyListUniqueName(thisIsIt, emailGlobal);
-                console.log(idxOriginal);
 
                 if(idxOriginal === -1){
                     swal({
@@ -803,8 +812,6 @@ function dashBoard(){
                     });
                     return;
                 }else{ //Proceed to delete
-                    console.log(localToDoLists);
-                    //localToDoLists = localToDoLists.filter(el => el.ownerEmail === emailGlobal && el.listName !== thisIsIt);
                     for( var i = 0; i < localToDoLists.length; i++){ 
     
                         if ( localToDoLists[i].ownerEmail === emailGlobal && localToDoLists[i].listName === thisIsIt ) { 
@@ -814,7 +821,6 @@ function dashBoard(){
                         }
                     
                     }
-                    console.log(localToDoLists);
                     localStorageToDoList2(localToDoLists);
                     hideTaskListView();
                 }
@@ -994,9 +1000,7 @@ function dashBoard(){
                                     }
                                 }
 
-                                console.log(localToDoLists);
                                 localStorageToDoList(localToDoLists);
-                                
 
                             }else{
 
