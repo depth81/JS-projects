@@ -1,36 +1,22 @@
-const oneDiv = 
-`
-<div id="oneDiv"> </div>
-`;
+const myForm = `
+<form id="myForm">
+    <input type="email" id="email" placeholder="email" style="display: block;"><br>
+    <input type="password" id="password" placeholder="password" style="display: block;"><br>
+    <div id="divBtnSubmitLogIn">
+        <button type="button" id="btnSubmitLI">SUBMIT</button>
+    </div>
+    <div id="divBtnHome">
+        <button type="button" id="btnBack">HOME</button>
+    </div>
+</form>`;
 
-const oneParagraph = 
-`
-<p id="myParag">I am PAULO ENRIQUE </p>
-`;
-
-document.body.innerHTML = oneDiv;
-document.body.innerHTML += oneParagraph;
-
-const myFirstDiv = document.getElementById("oneDiv");
-const myFirstParag = document.getElementById("myParag");
-
-myFirstDiv.appendChild(myFirstParag);
-
-const myForm = `<form id="myForm" action="/action_page.php">
-                    <label for="fname">First name:</label><br>
-                    <input type="text" id="fname" name="fname" value="John"><br>
-                    <label for="lname">Last name:</label><br>
-                    <input type="text" id="lname" name="lname" value="Doe"><br><br>
-                    <input type="submit" value="Submit">
-                </form>`;
-
-document.body.innerHTML += myForm;
+document.body.innerHTML = myForm;
 
 const myFormJS = document.getElementById("myForm");
-myFormJS.appendChild(myFirstDiv);
+const email = myFormJS.getElementsByTagName("button");
 
 console.log(myFormJS);
-
+console.log(email);
 
 
 

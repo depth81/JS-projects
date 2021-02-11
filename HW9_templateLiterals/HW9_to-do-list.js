@@ -3,20 +3,29 @@ window.addEventListener("load", landingPage);
 const myDivHeader = `<div id="divHeader">
                         <h1>TO-DO-LIST</h1>
                         <h2>The to-do-list to organize work &amp; life</h2>
-                    </div>`
+                    </div>`;
 
 document.body.innerHTML = myDivHeader;
 var divHeader = document.getElementById("divHeader");
 
-const myDivContainer = `<div id="container">
-                            <button id="btnSignUp" type="button">Sign Up</button>
-                            <button id="btnLogIn" type="button">Log In</button>
-                        </div>`;
-
+var myDivContainer = `<div id="container"></div>`;
 document.body.innerHTML += myDivContainer;
-var divContainer = document.getElementById("container");
+const divContainer = document.getElementById("container");
 
-var btnLogInAndSignUp = divContainer.querySelectorAll("button");
+var btnsu = `
+    <button id="btnSignUp" type="button">Sign Up</button>
+`;
+divContainer.innerHTML = btnsu;
+
+var btnli = `
+    <button id="btnLogIn" type="button">Log In</button>
+`;
+divContainer.innerHTML += btnli;
+
+const buttons = divContainer.querySelectorAll("button");
+var btnSignUp = buttons[0];
+var btnLogIn = buttons[1];
+
 
 /** GLOBAL VARIABLES */
 
@@ -87,146 +96,60 @@ function verifyListUniqueName(inpName, anEmail){
 /**GUI */
 
 function landingPage(){
-
-    btnSignUp = btnLogInAndSignUp[0];
-    btnLogIn = btnLogInAndSignUp[1];
-
-    divContainer.appendChild(btnSignUp);
+    
     divContainer.appendChild(btnLogIn);
-
+    divContainer.appendChild(btnSignUp);
+    
     btnSignUp.addEventListener("click", signUp);
     btnLogIn.addEventListener("click", logIn);
 
 }//END LandingPage()
 
 function signUp(){
-    
-    divContainer.removeChild(btnSignUp);
-    divContainer.removeChild(btnLogIn);
 
-    const br1 = document.createElement("br");
-    const br2 = document.createElement("br");
-    const br3 = document.createElement("br");
-    const br4 = document.createElement("br");
+    const myForm = `
+    <form id="myForm">
+        <input type="text" placeholder="First Name" id="txtFirstName" style="display: block;"><br>
+        <input type="text" placeholder="Last Name" id="txtLastName" style="display: block;"><br>
+        <input type="email" id="email" placeholder="email" required="" style="display: block;"><br>
+        <input type="password" id="password" placeholder="password" required="" style="display: block;"><br>
+        <div id="divChkBox">
+            <input type="checkbox" id="chkAgree"><label for="chkAgree">I agree to the Terms of Use</label>
+        </div>
+        <div id="divBtnSubmitSignUp">
+            <button type="button" id="btnSubmitSU">SUBMIT</button>
+            <button type="button" id="btnCLRSU">CLEAR</button>
+        </div>
+        <div id="divBtnHome">
+            <button type="button" id="btnHome">HOME</button>
+        </div>
+        <div id="divQYCLR">
+            <button type="button" id="btnQLS">Query LS</button>
+            <button type="button" id="btnCLR">Clear LS</button>
+        </div>
+    </form>`;
 
-    let myForm = document.createElement("form");
-    myForm.id = "myForm";
+    divContainer.innerHTML = myForm;
 
-    let txtFirstName = document.createElement("input");
-    txtFirstName.setAttribute("type", "text");
-    txtFirstName.placeholder = "First Name";
-    txtFirstName.style.display = "block";
-    txtFirstName.id = "txtFirstName";
-    myForm.appendChild(txtFirstName);
-    myForm.appendChild(br1);
+    const myFormJS = document.getElementById("myForm");
 
-    let txtLastName = document.createElement("input");
-    txtLastName.setAttribute("type", "text");
-    txtLastName.placeholder = "Last Name";
-    txtLastName.style.display = "block";
-    txtLastName.id = "txtLastName";
-    myForm.appendChild(txtLastName);
-    myForm.appendChild(br2);
-
-    let email = document.createElement("input");
-    email.setAttribute("type", "email");
-    email.id = "email";
-    email.style.display = "block";
-    email.placeholder = "email";
-    email.required = true;
-    myForm.appendChild(email);
-    myForm.appendChild(br3);
-
-    let passw = document.createElement("input");
-    passw.setAttribute("type", "password");
-    passw.id = "password";
-    passw.style.display = "block";
-    passw.placeholder = "password";
-    passw.required = true;
-    myForm.appendChild(passw);
-    myForm.appendChild(br4);
-
-    const lblAgree = document.createElement("label");
-    lblAgree.innerText = "I agree to the Terms of Use";
-    lblAgree.htmlFor = "chkAgree";
-    myForm.appendChild(lblAgree);
-
-    let chkAgree = document.createElement("input");
-    chkAgree.setAttribute("type", "checkbox");
-    chkAgree.id = "chkAgree";
-
-    const divChkBox = document.createElement("div");
-    divChkBox.id = "divChkBox";
-
-    const divBtnSubmitSignUp = document.createElement("div");
-    divBtnSubmitSignUp.id = "divBtnSubmitSignUp";
-
-    let btnSubmitSU = document.createElement("button");
-    btnSubmitSU.type = "button";
-    btnSubmitSU.id = "btnSubmitSU";
-    btnSubmitSU.innerText = "SUBMIT";
-
-    /* Creating provisional buttons to query and clear the local storage */
-    let btnQLS = document.createElement("button");
-    btnQLS.type = "button";
-    btnQLS.id = "btnQLS";
-    btnQLS.innerText = "Query LS";
-
-    let btnCLR = document.createElement("button");
-    btnCLR.type = "button";
-    btnCLR.id = "btnCLR";
-    btnCLR.innerText = "Clear LS";
-
-    let divQYCLR = document.createElement("div");
-    divQYCLR.id = "divQYCLR";
-    /** */
-
-    const divBtnHome = document.createElement("div");
-    divBtnHome.id = "divBtnHome";
-
-    let btnHome = document.createElement("button");
-    btnHome.type = "button";
-    btnHome.id = "btnHome";
-    btnHome.innerText = "HOME";
-
-    let btnCLRSU = document.createElement("button");
-    btnCLRSU.type = "button";
-    btnCLRSU.id = "btnCLRSU";
-    btnCLRSU.innerText = "CLEAR";
-    
-    divChkBox.appendChild(chkAgree);  
-    divChkBox.appendChild(lblAgree);
-    myForm.appendChild(divChkBox);
-    divBtnHome.appendChild(btnHome);
-    
-    divBtnSubmitSignUp.appendChild(btnSubmitSU);
-    divBtnSubmitSignUp.appendChild(btnCLRSU);
-    myForm.appendChild(divBtnSubmitSignUp);
-    myForm.appendChild(divBtnHome);
-    
-    //provisional buttons to query and clear the localStorage object
-    divQYCLR.appendChild(btnQLS);
-    divQYCLR.appendChild(btnCLR);
-    myForm.appendChild(divQYCLR); 
-    /** */
-
-    divContainer.appendChild(myForm);
+    var inputs = myFormJS.querySelectorAll("input");
+    console.log(inputs);
 
     btnSubmitSU.addEventListener("click", addUser);
     btnHome.addEventListener("click", removingElementsSUHome);
     btnCLRSU.addEventListener("click", clearSignUpUserData);
 
-
     function removingElementsSUHome(){
-        divContainer.removeChild(myForm);
+        divContainer.removeChild(myFormJS);
         landingPage();
     }
 
     function clearSignUpUserData(){
-        txtFirstName.value = "";
-        txtLastName.value = "";
-        email.value = "";
-        passw.value = "";
+        inputs[0].value = "";
+        inputs[1].value = "";
+        inputs[2].value = "";
+        inputs[3].value = "";
     }
 
     function addUser(){
@@ -240,7 +163,7 @@ function signUp(){
         
         }else{
 
-            if(txtFirstName.value === "" || txtLastName.value === "" || email.value === "" || passw.value === ""){
+            if(inputs[0].value === "" || inputs[1].value === "" || inputs[2].value === "" || inputs[3].value === ""){
 
                 swal({
                     text: "All fields are mandatory",
@@ -249,12 +172,12 @@ function signUp(){
         
             }else{
 
-                const fn = txtFirstName.value;
-                const ln = txtLastName.value;
-                const em = email.value;
-                const pw = passw.value;
+                const fn = inputs[0].value;
+                const ln = inputs[1].value;
+                const em = inputs[2].value;
+                const pw = inputs[3].value;
                 
-                emailGlobal = email.value;
+                emailGlobal = inputs[2].value;
 
                 let saveToList = checkingEmail(em);
 
@@ -343,55 +266,32 @@ function logIn(){
     divContainer.removeChild(btnSignUp);
     divContainer.removeChild(btnLogIn);
 
-    let myForm = document.createElement("form");
-    myForm.id = "myForm";
+    const myForm = `
+        <form id="myForm">
+            <input type="email" id="email" placeholder="email" style="display: block;"><br>
+            <input type="password" id="password" placeholder="password" style="display: block;"><br>
+            <div id="divBtnSubmitLogIn">
+                <button type="button" id="btnSubmitLI">SUBMIT</button>
+            </div>
+            <div id="divBtnHome">
+                <button type="button" id="btnBack">HOME</button>
+            </div>
+        </form> `;
+    
+    divContainer.innerHTML = myForm;
 
-    const br1 = document.createElement("br");
-    const br2 = document.createElement("br");
+    const myFormJS = document.getElementById("myForm");
+    console.log(myFormJS);
 
-    let email = document.createElement("input");
-    email.setAttribute("type", "email");
-    email.id = "email";
-    email.style.display = "block";
-    email.placeholder = "email";
-    myForm.appendChild(email);
-    myForm.appendChild(br1);
-
-    let passw = document.createElement("input");
-    passw.setAttribute("type", "password");
-    passw.id = "password";
-    passw.style.display = "block";
-    passw.placeholder = "password";
-    myForm.appendChild(passw);
-    myForm.appendChild(br2);
-
-    const divBtnSubmitLogIn = document.createElement("div");
-    divBtnSubmitLogIn.id = "divBtnSubmitLogIn";
-
-    let btnSubmitLI = document.createElement("button");
-    btnSubmitLI.type = "button";
-    btnSubmitLI.id = "btnSubmitLI";
-    btnSubmitLI.innerText = "SUBMIT";
-
-    const divBtnHome = document.createElement("div");
-    divBtnHome.id = "divBtnHome";
-
-    let btnHome = document.createElement("button");
-    btnHome.type = "button";
-    btnHome.id = "btnBack";
-    btnHome.innerText = "HOME";
-
-    divBtnSubmitLogIn.appendChild(btnSubmitLI);
-    divBtnHome.appendChild(btnHome);
-    myForm.appendChild(divBtnSubmitLogIn);
-    myForm.appendChild(divBtnHome);
-    divContainer.appendChild(myForm);
+    const buttons = divContainer.querySelectorAll("button");
+    var btnSubmitLI = buttons[0];
+    var btnHome = buttons[1];
 
     btnSubmitLI.addEventListener("click", matchUser);
     btnHome.addEventListener("click", removingContent);
 
     function removingContent(){
-        divContainer.removeChild(myForm);
+        divContainer.removeChild(myFormJS);
         landingPage();
     }
 
@@ -427,7 +327,7 @@ function logIn(){
             });
             document.getElementById("email").value = "";
             document.getElementById("password").value = "";
-            divContainer.removeChild(myForm);
+            divContainer.removeChild(myFormJS);
             dashBoard();
         }        
 
@@ -438,52 +338,39 @@ function logIn(){
 /** DASHBOARD */
 function dashBoard(){
 
-    let divLogOutAccSett = document.createElement("div");
-    divLogOutAccSett.id = "divLogOutAccSett";
-
-    let btnLogOut = document.createElement("button");
-    btnLogOut.type = "button";
-    btnLogOut.id = "btnLogOut";
-    btnLogOut.innerText = "Log Out";
-
-    let btnAccountSettings = document.createElement("button");
-    btnAccountSettings.type = "button";
-    btnAccountSettings.id = "btnAccountSettings";
-    btnAccountSettings.innerText = "Account Settings";
-
-    let divDashBoard = document.createElement("div");
-    divDashBoard.id = "divDashBoard";
-
-    let btnNewList = document.createElement("button");
-    btnNewList.type = "button";
-    btnNewList.id = "btnNewList";
-    btnNewList.innerText = "NEW";
-
-    let divbtnNewList = document.createElement("div");
-    divbtnNewList.id = "divbtnNewList";
-
-    divbtnNewList.appendChild(btnNewList);
-    divDashBoard.appendChild(divbtnNewList);
-
-    divLogOutAccSett.appendChild(btnLogOut);
-    divLogOutAccSett.appendChild(btnAccountSettings);
+    const divloacsett = `
+        <div id="divLogOutAccSett">
+            <button type="button" id="btnLogOut">Log Out</button>
+            <button type="button" id="btnAccountSettings">Account Settings</button>
+        </div
+    `;
     
-    divContainer.appendChild(divLogOutAccSett);
-    divContainer.appendChild(divDashBoard);
+    divContainer.innerHTML += divloacsett;
 
+    const divdashbrd = `
+        <div id="divDashBoard">
+            <div id="divbtnNewList">
+                <button type="button" id="btnNewList">NEW</button>
+            </div>
+            <div id="divToDoListIndex">
+                <ul id="ulToDoList"></ul>
+            </div>
+        </div>
+    `;
+
+    divContainer.innerHTML += divdashbrd;
+    var divDashBoard = document.getElementById("divDashBoard");
+    const btnNewListInside = divDashBoard.querySelectorAll("button");
+    btnNewList = btnNewListInside[0];
+
+    btnNewList.addEventListener("click", addNewList);
     btnLogOut.addEventListener("click", removeElements);
     btnAccountSettings.addEventListener("click", accountSettings);
 
-    btnNewList.addEventListener("click", addNewList);
+    const divbtnInside = divDashBoard.querySelectorAll("div");
+    divbtnNewList = divbtnInside[0];
 
-    let divToDoListIndex = document.createElement("div");
-    divToDoListIndex.id = "divToDoListIndex";
-
-    let ulToDoList = document.createElement("ul");
-    ulToDoList.id = "ulToDoList";
-
-    divToDoListIndex.appendChild(ulToDoList);
-    divDashBoard.appendChild(divToDoListIndex);
+    divToDoListIndex = divbtnInside[1];
 
     // Add a "checked" symbol when clicking on a list item
     var list = document.querySelector('ul');
@@ -572,61 +459,41 @@ function dashBoard(){
     var myNodelist2 = document.getElementsByTagName("LI");
 
     function listView(liText){
-    
-        divDashBoard.removeChild(divbtnNewList);
-        divDashBoard.removeChild(divToDoListIndex);
 
-        divbtnNewList.style.display = "none";
-        divToDoListIndex.style.display = "none";
+        const divdb = `
+            <div id="divButtons">
+                <button id="btnSaveList" type="button">SAVE LIST</button>
+                <button id="btnRenameList" type="button">RENAME LIST</button>
+                <button id="btnAddTask" type="button">ADD TASK</button>
+                <button id="btnBackToListIndex" type="button">BACK TO INDEX</button>
+                <button id="btnDeleteList" type="button">DELETE LIST</button>
+            </div>
+        `;
 
-        let divButtons = document.createElement("div");
-        divButtons.id = "divButtons";
+        divDashBoard.innerHTML = divdb;
 
-        let btnSaveList = document.createElement("button");
-        btnSaveList.type ="button";
-        btnSaveList.id = "btnSaveList";
-        btnSaveList.innerText = "SAVE LIST";
+        const divlv = `
+            <div id="divListView">
+                <ul id="ulTaskList"></ul>
+            </div>
+        `;
 
-        let btnBackToListIndex = document.createElement("button");
-        btnBackToListIndex.type ="button";
-        btnBackToListIndex.id = "btnBackToListIndex";
-        btnBackToListIndex.innerText = "BACK TO INDEX";
+        divDashBoard.innerHTML += divlv;
 
-        let btnRenameList = document.createElement("button");
-        btnRenameList.type = "button";
-        btnRenameList.id = "btnRenameList";
-        btnRenameList.innerText = "RENAME LIST";
-
-        let btnAddTask = document.createElement("button");
-        btnAddTask.type = "button";
-        btnAddTask.id = "btnAddTask";
-        btnAddTask.innerText = "ADD TASK";
-
-        let btnDeleteList = document.createElement("button");
-        btnDeleteList.type = "button";
-        btnDeleteList.id = "btnDeleteList";
-        btnDeleteList.innerText = "DELETE LIST";
-
-        var divListView = document.createElement("div");
-        divListView.id = "divListView";
-        
-        let ulTaskList = document.createElement("ul");
-        ulTaskList.id = "ulTaskList";
-
-        divButtons.appendChild(btnSaveList);
-        divButtons.appendChild(btnRenameList);
-        divButtons.appendChild(btnAddTask);
-        divButtons.appendChild(btnBackToListIndex);
-        divButtons.appendChild(btnDeleteList);
-        divDashBoard.appendChild(divButtons);
-        divListView.appendChild(ulTaskList);
-        divDashBoard.appendChild(divListView);
-
-        btnAddTask.addEventListener("click", newTaskList);
-        btnBackToListIndex.addEventListener("click", hideTaskListView);
-        btnSaveList.addEventListener("click", saveList);
-        btnRenameList.addEventListener("click", renameList);
-        btnDeleteList.addEventListener("click", deleteList);
+        // Get the parent DIV, add click listener...
+        document.getElementById("divButtons").addEventListener("click",function(e) {
+            if(e.target.id === "btnSaveList") {
+                saveList();
+            }else if(e.target.id === "btnRenameList"){
+                renameList();
+            }else if(e.target.id === "btnAddTask"){
+                newTaskList();
+            }else if(e.target.id === "btnBackToListIndex"){
+                hideTaskListView();
+            }else if(e.target.id === "btnDeleteList"){
+                deleteList();
+            }
+        });
 
         loadAndAppendTasks(liText);
 
