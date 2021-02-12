@@ -31,9 +31,9 @@ var btnLogIn = buttons[1];
 
 var usersList = [];
 var localToDoLists = [];
-var passwordGlobal = "";
-var inputValue = "";
-var thisIsIt = "";
+var passwordGlobal = ``;
+var inputValue = ``;
+var thisIsIt = ``;
 
 /** FUNCTIONS */
 
@@ -315,18 +315,18 @@ function logIn(){
 
         if(counter === 0){
             swal({
-                text: "please verify your credentials!",
-                icon: "error",
+                text: `please verify your credentials!`,
+                icon: `error`,
             });
-            document.getElementById("email").value = "";
-            document.getElementById("password").value = "";
+            document.getElementById("email").value = ``;
+            document.getElementById("password").value = ``;
         }else{
             swal({
-                title: "Welcome back!",
+                title: `Welcome back!`,
                 icon: "success",
             });
-            document.getElementById("email").value = "";
-            document.getElementById("password").value = "";
+            document.getElementById("email").value = ``;
+            document.getElementById("password").value = ``;
             divContainer.removeChild(myFormJS);
             dashBoard();
         }        
@@ -394,7 +394,7 @@ function dashBoard(){
         let newTDL = "";
 
         while(newTDL === ""){
-            newTDL = prompt("Please give the TDL a name");
+            newTDL = prompt(`Please give the TDL a name`);
         }
 
         if(newTDL === null){
@@ -408,7 +408,7 @@ function dashBoard(){
         li.appendChild(t);
 
         if (inputValue === '') {
-            alert("You must write something!");
+            alert(`You must write something!`);
         }else if(inputValue === null){
             return;
         }
@@ -420,8 +420,8 @@ function dashBoard(){
                 listView(thisIsIt);
             }else{
                 swal({
-                    text: "That name already exists for another to-do-list!",
-                    icon: "error",
+                    text: `That name already exists for another to-do-list!`,
+                    icon: `error`,
                 })
             }
         }
@@ -570,14 +570,14 @@ function dashBoard(){
         // Create a new task list
         function newTaskList() {
             
-            var newTaskList = prompt("Please enter a task list...");
+            var newTaskList = prompt(`Please enter a task list...`);
             var litl = document.createElement("li");
             var inputValueTL = newTaskList;
             var tl = document.createTextNode(inputValueTL);
             litl.appendChild(tl);
 
             if (inputValueTL === '') {
-                alert("You must write something!");
+                alert(`You must write something!`);
             }else if(inputValueTL === null){
                 return;
             }
@@ -641,17 +641,17 @@ function dashBoard(){
 
             if(idxOriginal === -1){
                 swal({
-                    title: "Please save the TDL first",
-                    text: "you haven't saved the list yet. You cannot rename it at this time!",
-                    icon: "info",
+                    title: `Please save the TDL first`,
+                    text: `you haven't saved the list yet. You cannot rename it at this time!`,
+                    icon: `info`,
                 });
                 return;
             }
 
-            let newTDLname = "";
+            let newTDLname = ``;
 
-            while(newTDLname === ""){
-                newTDLname = prompt("Please enter a new TDL name");
+            while(newTDLname === ``){
+                newTDLname = prompt(`Please enter a new TDL name`);
             }
 
             if(newTDLname === null){
@@ -669,8 +669,8 @@ function dashBoard(){
                 inputValue = inputValue2;
             }else{
                 swal({
-                    text: "That name already exists for another to-do-list!",
-                    icon: "error",
+                    text: `That name already exists for another to-do-list!`,
+                    icon: `error`,
                 })
             }
 
@@ -678,7 +678,7 @@ function dashBoard(){
 
         function deleteList(){
 
-            let deleteList = confirm("are you sure???");
+            let deleteList = confirm(`are you sure???`);
 
             if(deleteList){
                 //verify if the list has been already saved
@@ -686,9 +686,9 @@ function dashBoard(){
 
                 if(idxOriginal === -1){
                     swal({
-                        title: "Please save the TDL first",
-                        text: "you haven't saved the list yet. You cannot delete it at this time!",
-                        icon: "info",
+                        title: `Please save the TDL first`,
+                        text: `you haven't saved the list yet. You cannot delete it at this time!`,
+                        icon: `info`,
                     });
                     return;
                 }else{ //Proceed to delete
@@ -714,10 +714,10 @@ function dashBoard(){
 
     function removeElements(){
         
-        var message = confirm("Are you sure to log out?");
+        var message = confirm(`Are you sure to log out?`);
         
         if(message){
-            
+
             removeAllChildNodes(divContainer);    
             
             function removeAllChildNodes(element) {
@@ -736,81 +736,35 @@ function dashBoard(){
 
     function accountSettings(){
 
-        btnAccountSettings.removeEventListener("click", accountSettings);
+        divContainer.removeChild(divDashBoard);
 
-        divDashBoard.style.display = "none";
+        const myFormAcSet = ` 
+        
+        <form id="myForm2">
+            <input type="text" placeholder="New First Name" id="txtFirstName2" style="display: block;"><br>
+            <input type="text" placeholder="New Last Name" id="txtLastName2" style="display: block;"><br>
+            <input type="email" id="email2" placeholder="New email" required="" style="display: block;"><br>
+            <input type="password" id="password2" placeholder="New password" required="" style="display: block;"><br>
+            <div id="divBtnSubmitModify">
+                <button type="button" id="btnSubmitModify">MODIFY</button>
+                <button type="button" id="btnClearEdit">CLEAR</button>
+                <button id="btnCancel">CANCEL</button>
+            </div>
+        </form>
+        
+        `;
 
-        const br1 = document.createElement("br");
-        const br2 = document.createElement("br");
-        const br3 = document.createElement("br");
-        const br4 = document.createElement("br");
+        divContainer.innerHTML += myFormAcSet;
 
-        let myForm2 = document.createElement("form");
-        myForm2.id = "myForm2";
-
-        let txtFirstName2 = document.createElement("input");
-        txtFirstName2.setAttribute("type", "text");
-        txtFirstName2.placeholder = "New First Name";
-        txtFirstName2.style.display = "block";
-        txtFirstName2.id = "txtFirstName2";
-        myForm2.appendChild(txtFirstName2);
-        myForm2.appendChild(br1);
-
-        let txtLastName2 = document.createElement("input");
-        txtLastName2.setAttribute("type", "text");
-        txtLastName2.placeholder = "New Last Name";
-        txtLastName2.style.display = "block";
-        txtLastName2.id = "txtLastName2";
-        myForm2.appendChild(txtLastName2);
-        myForm2.appendChild(br2);
-
-        let email2 = document.createElement("input");
-        email2.setAttribute("type", "email");
-        email2.id = "email2";
-        email2.style.display = "block";
-        email2.placeholder = "New email";
-        email2.required = true;
-        myForm2.appendChild(email2);
-        myForm2.appendChild(br3);
-
-        let passw2 = document.createElement("input");
-        passw2.setAttribute("type", "password");
-        passw2.id = "password2";
-        passw2.style.display = "block";
-        passw2.placeholder = "New password";
-        passw2.required = true;
-        myForm2.appendChild(passw2);
-        myForm2.appendChild(br4);
-
-        const divBtnSubmitModify = document.createElement("div");
-        divBtnSubmitModify.id = "divBtnSubmitModify";
-
-        let btnSubmitModify = document.createElement("button");
-        btnSubmitModify.type = "button";
-        btnSubmitModify.id = "btnSubmitModify";
-        btnSubmitModify.innerText = "MODIFY";
-
-        let btnCancel = document.createElement("button");
-        btnCancel.type + "button";
-        btnCancel.id = "btnCancel";
-        btnCancel.innerText = "CANCEL";
-
-        let btnClearEdit = document.createElement("button");
-        btnClearEdit.type = "button";
-        btnClearEdit.id = "btnClearEdit";
-        btnClearEdit.innerText = "CLEAR";
-
-        divBtnSubmitModify.appendChild(btnSubmitModify);
-        divBtnSubmitModify.appendChild(btnClearEdit);
-        divBtnSubmitModify.appendChild(btnCancel);
-        myForm2.appendChild(divBtnSubmitModify);
-
-        divContainer.insertBefore(myForm2, divDashBoard);
+        var btnSubmitModify = document.getElementById("btnSubmitModify");
+        var btnClearEdit = document.getElementById("btnClearEdit");
+        var btnCancel = document.getElementById("btnCancel");
 
         btnSubmitModify.addEventListener("click", askForNewData);
         btnCancel.addEventListener("click", cancelEdition);
         btnClearEdit.addEventListener("click", clearEdition);
-
+        btnLogOut.addEventListener("click", removeElements);
+        
         function clearEdition(){
             document.getElementById("txtFirstName2").value = "";
             document.getElementById("txtLastName2").value = "";
@@ -820,8 +774,9 @@ function dashBoard(){
 
         function cancelEdition(){
             divContainer.removeChild(myForm2);
-            divDashBoard.style.display =  "block";
+            divContainer.appendChild(divDashBoard);
             btnAccountSettings.addEventListener("click", accountSettings);
+            btnLogOut.addEventListener("click", removeElements);
         }
 
         function askForNewData(){
@@ -853,7 +808,7 @@ function dashBoard(){
                     usersList = JSON.parse(storedList);
                 }
 
-                currentEmail = prompt("Please enter your current email");
+                currentEmail = prompt(`Please enter your current email`);
                 let indexCurrentEmail = checkingEmail(currentEmail);
 
                 if(currentEmail !== null){
@@ -896,8 +851,8 @@ function dashBoard(){
                                 }else{
 
                                     swal({
-                                        text: "This email already exists!",
-                                        icon: "error",
+                                        text: `This email already exists!`,
+                                        icon: `error`,
                                     });
     
                                 }
@@ -907,8 +862,8 @@ function dashBoard(){
                         }else{
 
                             swal({
-                                text: "There was an error!",
-                                icon: "error",
+                                text: `There was an error!`,
+                                icon: `error`,
                             });
 
                         }                        
@@ -916,8 +871,8 @@ function dashBoard(){
                     }else{
 
                         swal({
-                            text: "There was an error!",
-                            icon: "error",
+                            text: `There was an error!`,
+                            icon: `error`,
                         });
 
                     }
@@ -925,8 +880,8 @@ function dashBoard(){
                 }else{
 
                     swal({
-                        text: "There was an error!",
-                        icon: "error",
+                        text: `There was an error!`,
+                        icon: `error`,
                     });               
                 
                 }//end if currentEmail is null
