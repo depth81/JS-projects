@@ -41,8 +41,8 @@ function localStorageUsersList(uList){
     localStorage.setItem('localUsersList',JSON.stringify(uList));
     chkAgree.checked = false;
     swal({
-        title: "successfully stored!",
-        icon: "success",
+        title: `successfully stored!`,
+        icon: `success`,
     });
     
     divContainer.removeChild(myForm);
@@ -52,24 +52,24 @@ function localStorageUsersList(uList){
 function localStorageUsersList2(uList){
     localStorage.setItem('localUsersList',JSON.stringify(uList));
     swal({
-        title: "successfully modified!",
-        icon: "success",
+        title: `successfully modified!`,
+        icon: `success`,
     });
 }
 
 function localStorageToDoList(tdList){
     localStorage.setItem('localToDoList', JSON.stringify(tdList));
     swal({
-        title: "The TDL was successfully stored!",
-        icon: "success",
+        title: `The TDL was successfully stored!`,
+        icon: `success`,
     });
 }
 
 function localStorageToDoList2(tdList){
     localStorage.setItem('localToDoList', JSON.stringify(tdList));
     swal({
-        title: "The TDL was successfully deleted!",
-        icon: "success",
+        title: `The TDL was successfully deleted!`,
+        icon: `success`,
     });
 }
 
@@ -157,17 +157,17 @@ function signUp(){
         if(!chkAgree.checked){
 
             swal({
-                text: "You must accept the terms of use!",
-                icon: "error",
+                text: `You must accept the terms of use!`,
+                icon: `error`,
             });
         
         }else{
 
-            if(inputs[0].value === "" || inputs[1].value === "" || inputs[2].value === "" || inputs[3].value === ""){
+            if(inputs[0].value === `` || inputs[1].value === `` || inputs[2].value === `` || inputs[3].value === ``){
 
                 swal({
-                    text: "All fields are mandatory",
-                    icon: "error",
+                    text: `All fields are mandatory`,
+                    icon: `error`,
                 });
         
             }else{
@@ -184,8 +184,8 @@ function signUp(){
                 if(saveToList !== -1){
 
                     swal({
-                        text: "This email address already exists in our database.",
-                        icon: "error",
+                        text: `This email address already exists in our database.`,
+                        icon: `error`,
                     });
                     
                     
@@ -194,8 +194,8 @@ function signUp(){
                     if(pw.length<3){
             
                         swal({
-                            text: "Your password must contain at least 3 characters",
-                            icon: "error",
+                            text: `Your password must contain at least 3 characters`,
+                            icon: `error`,
                         });
             
                     }else{
