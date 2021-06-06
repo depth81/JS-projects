@@ -130,7 +130,7 @@ console.log(v1.Model);
 console.log(v1.Year);
 console.log(v1.Weight); */
 
-/* const car1 = new Cars("Chevrolet", "Captiva", "2021", "450");
+const car1 = new Cars("Chevrolet", "Captiva", "2021", "450");
 console.log(car1.Make);
 console.log(car1.Model);
 console.log(car1.Year);
@@ -177,7 +177,7 @@ console.log(car3.Weight);
 console.log(car3.Drive());
 console.log(car3.Stop());
 console.log(car3.TripsSinceMaintenance);
-console.log(car3.NeedsMaintenance); */
+console.log(car3.NeedsMaintenance);
 
 
 
