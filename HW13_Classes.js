@@ -81,8 +81,16 @@ class Vehicle {
         this.TripsSinceMaintenance += 1;
         if(this.TripsSinceMaintenance > 100){
             this.NeedsMaintenance = true;
-            //this.Repair();
         }
+    }
+
+    //Manage PLANES trips
+    planeTrips(){
+        this.TripsSinceMaintenance += 1;
+        if(this.TripsSinceMaintenance > 100){
+            this.NeedsMaintenance = true;
+        }
+        return this.NeedsMaintenance;
     }
 
     //REPAIR
@@ -122,7 +130,7 @@ console.log(v1.Model);
 console.log(v1.Year);
 console.log(v1.Weight); */
 
-const car1 = new Cars("Chevrolet", "Captiva", "2021", "450");
+/* const car1 = new Cars("Chevrolet", "Captiva", "2021", "450");
 console.log(car1.Make);
 console.log(car1.Model);
 console.log(car1.Year);
@@ -169,9 +177,56 @@ console.log(car3.Weight);
 console.log(car3.Drive());
 console.log(car3.Stop());
 console.log(car3.TripsSinceMaintenance);
-console.log(car3.NeedsMaintenance);
+console.log(car3.NeedsMaintenance); */
 
 
 
+/**Extra Credit:
 
+Create a Planes class that is also a subclass of Vehicle. Add methods to the Planes class for Flying and Landing (similar to Driving and Stopping), but different in one respect: Once the NeedsMaintenance boolean gets set to true, any attempt at flight should be rejected (return false), and an error message should be printed saying that the plane can't fly until it's repaired. */
+
+
+class Planes extends Vehicle{
+    
+    isFlying = false;
+    canFly = true;
+
+    constructor(make, model, year, weight) {
+        super(make, model, year, weight); // call the super class constructor and pass in the parameters
+    }
+
+    Flying(){ 
+        this.canFly = !super.planeTrips();
+        if(this.canFly){
+            this.isFlying = true;
+            return `Now the plane is FLYIIIINGGGG`;
+        }else{
+            alert("This plane cannot fly again until it is fully repaired.");
+            return "This plane cannot fly again until it is fully repaired."
+        }
+        
+    }
+
+    Landing(){
+        this.isFlying = false;
+        return `The plane has succesfully landed`;
+    }
+
+}
+
+const plane1 = new Planes("Boeing","777","2015","50000");
+console.log(plane1.Make);
+console.log(plane1.Model);
+console.log(plane1.Year);
+console.log(plane1.Weight);
+console.log(plane1.Flying());
+console.log(plane1.Landing());
+console.log(`The number of flights already done is ${plane1.TripsSinceMaintenance}`);
+console.log(plane1.Flying());
+console.log(plane1.Landing());
+console.log(`The number of flights already done is ${plane1.TripsSinceMaintenance}`);
+console.log(plane1.Flying());
+console.log(plane1.Landing());
+console.log(`The number of flights already done is ${plane1.TripsSinceMaintenance}`);
+console.log(plane1.Flying());
 
