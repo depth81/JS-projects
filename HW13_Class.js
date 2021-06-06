@@ -15,7 +15,7 @@ Create 3 different cars, using your Cars class, and drive them all a different n
 class Vehicle {
 
     NeedsMaintenance = false;
-    TripsSinceMaintenance = 95;
+    TripsSinceMaintenance = 97;
 
     constructor(make, model, year, weight) {
         this.make = make;
@@ -81,7 +81,7 @@ class Vehicle {
         this.TripsSinceMaintenance += 1;
         if(this.TripsSinceMaintenance > 100){
             this.NeedsMaintenance = true;
-            this.Repair();
+            //this.Repair();
         }
     }
 
@@ -138,6 +138,12 @@ console.log(car1.Stop());
 console.log(car1.Drive());
 console.log(car1.Stop());
 console.log(car1.TripsSinceMaintenance);
+console.log(car1.NeedsMaintenance);
+console.log("Then I take the car to the workshop...");
+car1.Repair();
+console.log(car1.TripsSinceMaintenance);
+console.log(car1.NeedsMaintenance);
+
 
 
 const car2 = new Cars("Renault", "Stepway", "2019", "500");
@@ -152,6 +158,7 @@ console.log(car2.Stop());
 console.log(car2.Drive());
 console.log(car2.Stop());
 console.log(car2.TripsSinceMaintenance);
+console.log(car2.NeedsMaintenance);
 
 
 const car3 = new Cars("Toyota", "Corolla", "2020", "700");
@@ -162,6 +169,7 @@ console.log(car3.Weight);
 console.log(car3.Drive());
 console.log(car3.Stop());
 console.log(car3.TripsSinceMaintenance);
+console.log(car3.NeedsMaintenance);
 
 
 
